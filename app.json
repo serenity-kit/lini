@@ -27,7 +27,7 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": ["./withSQLiteBytecodeVtable", "expo-router"],
+    "plugins": ["expo-router", "expo-asset"],
     "extra": {
       "router": {
         "origin": false
