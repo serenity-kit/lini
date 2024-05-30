@@ -4,8 +4,8 @@ import { StatusBar } from "expo-status-bar";
 import * as React from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import "../global.css";
-import { NAV_THEME } from "../lib/constants.ts";
-// import { useColorScheme } from "../lib/useColorScheme.ts";
+import { NAV_THEME } from "../lib/constants";
+import { useColorScheme } from "../lib/useColorScheme";
 
 const LIGHT_THEME: Theme = {
   dark: false,
@@ -17,8 +17,7 @@ const DARK_THEME: Theme = {
 };
 
 export default function Layout() {
-  const isDarkColorScheme = true;
-  // const { isDarkColorScheme } = useColorScheme();
+  const { isDarkColorScheme } = useColorScheme();
 
   return (
     <SafeAreaProvider>
