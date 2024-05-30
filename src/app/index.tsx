@@ -1,39 +1,15 @@
-import { querySQL } from "@livestore/livestore";
-import { useQuery, useStore } from "@livestore/livestore/react";
-import { Link, router } from "expo-router";
+import { Link } from "expo-router";
 import * as React from "react";
 import { FlatList, Pressable, View } from "react-native";
 import { Button } from "../components/ui/button.tsx";
 import { Card } from "../components/ui/card.tsx";
 import { Text } from "../components/ui/text.tsx";
-import type { Workout as WorkoutType } from "../schema/index.ts";
-import { mutations } from "../schema/index.ts";
 import { formatDatetimeString } from "../utils/formatDatetimeString/formatDatetimeString.ts";
-import { uniqueId } from "../utils/uniqueId/uniqueId.ts";
 
 const gap = 16;
 
-const workoutsQuery = querySQL<WorkoutType[]>(
-  "SELECT * FROM workouts ORDER BY startedAt DESC"
-);
-
 const Workouts: React.FC = () => {
-  const workouts = useQuery(workoutsQuery);
-  const { store } = useStore();
-
-  const addWorkout = () => {
-    const workoutId = uniqueId();
-    store.mutate(
-      mutations.addWorkout({
-        id: workoutId,
-        startedAt: new Date().toISOString(),
-      })
-    );
-    router.push({
-      pathname: "/workout/[workoutId]",
-      params: { workoutId },
-    });
-  };
+  const workouts: { id: string; startedAt: string }[] = [];
 
   return (
     <>
@@ -66,7 +42,7 @@ const Workouts: React.FC = () => {
       />
       <Button
         size="lg"
-        onPress={addWorkout}
+        onPress={() => {}}
         className="absolute bottom-0 mb-16 self-center"
       >
         <Text>Start Workout</Text>
