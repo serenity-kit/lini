@@ -3,10 +3,9 @@ import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import * as React from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { PortalHost } from "../components/primitives/portal.tsx";
 import "../global.css";
 import { NAV_THEME } from "../lib/constants.ts";
-import { useColorScheme } from "../lib/useColorScheme.ts";
+// import { useColorScheme } from "../lib/useColorScheme.ts";
 
 const LIGHT_THEME: Theme = {
   dark: false,
@@ -18,7 +17,8 @@ const DARK_THEME: Theme = {
 };
 
 export default function Layout() {
-  const { isDarkColorScheme } = useColorScheme();
+  const isDarkColorScheme = true;
+  // const { isDarkColorScheme } = useColorScheme();
 
   return (
     <SafeAreaProvider>
@@ -29,12 +29,11 @@ export default function Layout() {
             name="index"
             options={{
               // Hide the header for all other routes.
-              title: "Workouts",
+              title: "Lists",
             }}
           />
         </Stack>
         {/* Default Portal Host (one per app) */}
-        <PortalHost />
       </ThemeProvider>
     </SafeAreaProvider>
   );
