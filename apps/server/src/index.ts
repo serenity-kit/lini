@@ -1,15 +1,11 @@
-import { Repo, RepoConfig } from "@automerge/automerge-repo";
 import * as opaque from "@serenity-kit/opaque";
 import { TRPCError } from "@trpc/server";
 import * as trpcExpress from "@trpc/server/adapters/express";
-import { PostgresStorageAdapter } from "automerge-repo-storage-postgres";
 import cookie from "cookie";
 import cookieParser from "cookie-parser";
 import cors, { CorsOptions } from "cors";
 import "dotenv/config";
 import express from "express";
-import os from "os";
-import pg from "pg";
 import { WebSocketServer } from "ws";
 import { z } from "zod";
 import { addUserToDocument } from "./db/addUserToDocument.js";
@@ -35,7 +31,6 @@ import {
   RegisterFinishParams,
   RegisterStartParams,
 } from "./schema.js";
-import { AuthAdapter } from "./utils/AuthAdapter/AuthAdapter.js";
 import { generateId } from "./utils/generateId/generateId.js";
 import { getOpaqueServerSetup } from "./utils/getOpaqueServerSetup/getOpaqueServerSetup.js";
 import {
@@ -45,15 +40,7 @@ import {
   router,
 } from "./utils/trpc/trpc.js";
 
-const pool = new pg.Pool({
-  connectionString: process.env.DATABASE_URL,
-  max: 20,
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000,
-});
-
 const webSocketServer = new WebSocketServer({ noServer: true });
-const hostname = os.hostname();
 const PORT = process.env.PORT !== undefined ? parseInt(process.env.PORT) : 3030;
 const app = express();
 
@@ -114,7 +101,7 @@ const appRouter = router({
       })
     )
     .mutation(async (opts) => {
-      const { documentId } = repo.create();
+      const documentId = "TODO"
       const document = await createDocument({
         userId: opts.ctx.session.userId,
         documentId,
@@ -286,15 +273,6 @@ app.use(
     createContext,
   })
 );
-
-const config: RepoConfig = {
-  network: [new AuthAdapter(webSocketServer)],
-  storage: new PostgresStorageAdapter("DocumentData", pool),
-  // @ts-expect-error
-  peerId: `storage-server-${hostname}`,
-  sharePolicy: async () => false,
-};
-const repo = new Repo(config);
 
 app.get("/", (_req, res) => {
   res.send(`Server is running`);

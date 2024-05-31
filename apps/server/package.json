@@ -11,20 +11,15 @@
     "ts:check": "tsc --noEmit"
   },
   "dependencies": {
-    "@automerge/automerge": "^2.2.2",
-    "@automerge/automerge-repo": "^1.1.12",
-    "@automerge/automerge-repo-network-websocket": "^1.1.12",
     "@prisma/client": "5.14.0",
     "@serenity-kit/opaque": "^0.8.4",
     "@trpc/server": "11.0.0-rc.366",
-    "automerge-repo-storage-postgres": "^0.0.1",
     "cookie": "^0.6.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "isomorphic-ws": "^5.0.0",
-    "pg": "^8.11.5",
     "ws": "^8.17.0",
     "zod": "^3.23.8"
   },

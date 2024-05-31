@@ -2,7 +2,7 @@
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'automerge-livelist'
+app = 'koriko'
 primary_region = 'ams'
 swap_size_mb = 2048
 
