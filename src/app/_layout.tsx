@@ -5,8 +5,8 @@ import * as React from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import "../global.css";
 import useLoadingLibsodium from "../hooks/useLoadingLibsodium";
-import { NAV_THEME } from "../lib/constants";
-import { useColorScheme } from "../lib/useColorScheme";
+import { NAV_THEME } from "../rnr/lib/constants";
+import { useColorScheme } from "../rnr/lib/useColorScheme";
 
 const LIGHT_THEME: Theme = {
   dark: false,
@@ -19,7 +19,6 @@ const DARK_THEME: Theme = {
 
 export default function Layout() {
   const { isDarkColorScheme } = useColorScheme();
-
   const isLoadingComplete = useLoadingLibsodium();
 
   if (!isLoadingComplete) {
