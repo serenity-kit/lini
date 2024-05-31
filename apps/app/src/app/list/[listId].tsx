@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import { View } from "react-native";
 import sodium, { KeyPair } from "react-native-libsodium";
+import { useYjsSync } from "secsync-react-yjs";
 import * as Yjs from "yjs";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
@@ -30,32 +31,32 @@ const List: React.FC<Props> = ({ documentId }) => {
   const todos = useYArray(yTodos);
   const [newTodoText, setNewTodoText] = useState("");
 
-  // const [state, send] = useYjsSync({
-  //   yDoc: yDocRef.current,
-  //   documentId,
-  //   signatureKeyPair: authorKeyPair,
-  //   websocketEndpoint,
-  //   websocketSessionKey: "your-secret-session-key",
-  //   getNewSnapshotData: async ({ id }) => {
-  //     return {
-  //       data: Yjs.encodeStateAsUpdateV2(yDocRef.current),
-  //       key: documentKey,
-  //       publicData: {},
-  //     };
-  //   },
-  //   getSnapshotKey: async () => {
-  //     return documentKey;
-  //   },
-  //   shouldSendSnapshot: ({ snapshotUpdatesCount }) => {
-  //     // create a new snapshot if the active snapshot has more than 100 updates
-  //     return snapshotUpdatesCount > 100;
-  //   },
-  //   isValidClient: async (signingPublicKey: string) => {
-  //     return true;
-  //   },
-  //   sodium,
-  //   logging: "debug",
-  // });
+  const [state, send] = useYjsSync({
+    yDoc: yDocRef.current,
+    documentId,
+    signatureKeyPair: authorKeyPair,
+    websocketEndpoint,
+    websocketSessionKey: "your-secret-session-key",
+    getNewSnapshotData: async ({ id }) => {
+      return {
+        data: Yjs.encodeStateAsUpdateV2(yDocRef.current),
+        key: documentKey,
+        publicData: {},
+      };
+    },
+    getSnapshotKey: async () => {
+      return documentKey;
+    },
+    shouldSendSnapshot: ({ snapshotUpdatesCount }) => {
+      // create a new snapshot if the active snapshot has more than 100 updates
+      return snapshotUpdatesCount > 100;
+    },
+    isValidClient: async (signingPublicKey: string) => {
+      return true;
+    },
+    sodium,
+    logging: "debug",
+  });
 
   return (
     <>

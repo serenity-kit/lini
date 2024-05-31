@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import cors, { CorsOptions } from "cors";
 import "dotenv/config";
 import express from "express";
+import { createWebSocketConnection } from "secsync";
 import { WebSocketServer } from "ws";
 import { z } from "zod";
 import { addUserToDocument } from "./db/addUserToDocument.js";
@@ -13,6 +14,8 @@ import { createDocument } from "./db/createDocument.js";
 import { createLoginAttempt } from "./db/createLoginAttempt.js";
 import { createOrRefreshDocumentInvitation } from "./db/createOrRefreshDocumentInvitation.js";
 import { createSession } from "./db/createSession.js";
+import { createSnapshot } from "./db/createSnapshot.js";
+import { createUpdate } from "./db/createUpdate.js";
 import { createUser } from "./db/createUser.js";
 import { deleteLoginAttempt } from "./db/deleteLoginAttempt.js";
 import { deleteSession } from "./db/deleteSession.js";
@@ -21,6 +24,7 @@ import { getDocumentInvitation } from "./db/getDocumentInvitation.js";
 import { getDocumentMembers } from "./db/getDocumentMembers.js";
 import { getDocumentsByUserId } from "./db/getDocumentsByUserId.js";
 import { getLoginAttempt } from "./db/getLoginAttempt.js";
+import { getOrCreateDocument } from "./db/getOrCreateDocument.js";
 import { getSession } from "./db/getSession.js";
 import { getUser } from "./db/getUser.js";
 import { getUserByUsername } from "./db/getUserByUsername.js";
@@ -297,6 +301,19 @@ server.on("upgrade", async (request, socket, head) => {
     socket.destroy();
     return;
   }
+
+  webSocketServer.on(
+    "connection",
+    createWebSocketConnection({
+      getDocument: getOrCreateDocument,
+      createSnapshot: createSnapshot,
+      createUpdate: createUpdate,
+      hasAccess: async () => true,
+      hasBroadcastAccess: async ({ websocketSessionKeys }) =>
+        websocketSessionKeys.map(() => true),
+      logging: "error",
+    })
+  );
 
   webSocketServer.handleUpgrade(request, socket, head, (currentSocket) => {
     // @ts-expect-error adding the session to the socket so we can access it in the network adapter
