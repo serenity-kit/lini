@@ -6,6 +6,5 @@ module.exports = (api) => {
       ["babel-preset-expo", { jsxImportSource: "nativewind" }],
       "nativewind/babel",
     ],
-    plugins: ["babel-plugin-transform-vite-meta-env"],
   };
 };
