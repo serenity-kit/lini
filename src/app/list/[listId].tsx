@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
+import { Pressable, Text, TextInput, View } from "react-native";
 import sodium, { KeyPair } from "react-native-libsodium";
-import { useYjsSync } from "secsync-react-yjs";
 import * as Yjs from "yjs";
 import { useYArray } from "../../hooks/useYArray";
 
@@ -13,7 +13,7 @@ type Props = {
   documentId: string;
 };
 
-export const YjsTodosExample: React.FC<Props> = ({ documentId }) => {
+const List: React.FC<Props> = ({ documentId }) => {
   const documentKey = sodium.from_base64(
     "MTcyipWZ6Kiibd5fATw55i9wyEU7KbdDoTE_MRgDR98"
   );
@@ -27,70 +27,74 @@ export const YjsTodosExample: React.FC<Props> = ({ documentId }) => {
   const todos = useYArray(yTodos);
   const [newTodoText, setNewTodoText] = useState("");
 
-  const [state, send] = useYjsSync({
-    yDoc: yDocRef.current,
-    documentId,
-    signatureKeyPair: authorKeyPair,
-    websocketEndpoint,
-    websocketSessionKey: "your-secret-session-key",
-    getNewSnapshotData: async ({ id }) => {
-      return {
-        data: Yjs.encodeStateAsUpdateV2(yDocRef.current),
-        key: documentKey,
-        publicData: {},
-      };
-    },
-    getSnapshotKey: async () => {
-      return documentKey;
-    },
-    shouldSendSnapshot: ({ snapshotUpdatesCount }) => {
-      // create a new snapshot if the active snapshot has more than 100 updates
-      return snapshotUpdatesCount > 100;
-    },
-    isValidClient: async (signingPublicKey: string) => {
-      return true;
-    },
-    sodium,
-    logging: "debug",
-  });
+  // const [state, send] = useYjsSync({
+  //   yDoc: yDocRef.current,
+  //   documentId,
+  //   signatureKeyPair: authorKeyPair,
+  //   websocketEndpoint,
+  //   websocketSessionKey: "your-secret-session-key",
+  //   getNewSnapshotData: async ({ id }) => {
+  //     return {
+  //       data: Yjs.encodeStateAsUpdateV2(yDocRef.current),
+  //       key: documentKey,
+  //       publicData: {},
+  //     };
+  //   },
+  //   getSnapshotKey: async () => {
+  //     return documentKey;
+  //   },
+  //   shouldSendSnapshot: ({ snapshotUpdatesCount }) => {
+  //     // create a new snapshot if the active snapshot has more than 100 updates
+  //     return snapshotUpdatesCount > 100;
+  //   },
+  //   isValidClient: async (signingPublicKey: string) => {
+  //     return true;
+  //   },
+  //   sodium,
+  //   logging: "debug",
+  // });
 
   return (
     <>
-      <div className="todoapp">
-        <form
-          onSubmit={(event) => {
-            event.preventDefault();
-            yTodos.push([newTodoText]);
-            setNewTodoText("");
-          }}
-        >
-          <input
+      <View>
+        <View>
+          <TextInput
             placeholder="What needs to be done?"
-            onChange={(event) => setNewTodoText(event.target.value)}
+            onChangeText={(value) => setNewTodoText(value)}
             value={newTodoText}
-            className="new-todo"
           />
-          <button className="add">Add</button>
-        </form>
+          <Pressable
+            className="add"
+            onPress={(event) => {
+              event.preventDefault();
+              yTodos.push([newTodoText]);
+              setNewTodoText("");
+            }}
+          >
+            <Text>Add</Text>
+          </Pressable>
+        </View>
 
-        <ul className="todo-list">
+        <View>
           {todos.map((entry, index) => {
             return (
-              <li key={`${index}-${entry}`}>
-                <div className="edit">{entry}</div>
-                <button
+              <View key={`${index}-${entry}`}>
+                <View className="edit">
+                  <Text>{entry}</Text>
+                </View>
+                <Pressable
                   className="destroy"
-                  onClick={() => {
+                  onPress={() => {
                     yTodos.delete(index, 1);
                   }}
                 />
-              </li>
+              </View>
             );
           })}
-        </ul>
-      </div>
-
-      <div className="mt-8" />
+        </View>
+      </View>
     </>
   );
 };
+
+export default List;

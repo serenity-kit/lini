@@ -4,6 +4,7 @@ import { StatusBar } from "expo-status-bar";
 import * as React from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import "../global.css";
+import useLoadingLibsodium from "../hooks/useLoadingLibsodium";
 import { NAV_THEME } from "../lib/constants";
 import { useColorScheme } from "../lib/useColorScheme";
 
@@ -18,6 +19,12 @@ const DARK_THEME: Theme = {
 
 export default function Layout() {
   const { isDarkColorScheme } = useColorScheme();
+
+  const isLoadingComplete = useLoadingLibsodium();
+
+  if (!isLoadingComplete) {
+    return null;
+  }
 
   return (
     <SafeAreaProvider>
