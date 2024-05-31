@@ -1,8 +1,5 @@
+import { Snapshot as DbSnapshot, Update as DbUpdate } from "@prisma/client";
 import { Snapshot, Update } from "secsync";
-import {
-  Snapshot as DbSnapshot,
-  Update as DbUpdate,
-} from "../../prisma/generated/output";
 
 export function serializeSnapshot(snapshot: DbSnapshot): Snapshot {
   return {

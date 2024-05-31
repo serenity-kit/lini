@@ -3,7 +3,6 @@ import { CreateUpdateParams, Update } from "secsync";
 import { serializeUpdate } from "../utils/serialize.js";
 import { prisma } from "./prisma.js";
 
-
 export async function createUpdate({ update }: CreateUpdateParams) {
   const MAX_RETRIES = 5;
   let retries = 0;
@@ -98,5 +97,6 @@ export async function createUpdate({ update }: CreateUpdateParams) {
     }
   }
 
+  // @ts-expect-error
   return result;
 }

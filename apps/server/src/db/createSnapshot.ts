@@ -105,5 +105,6 @@ export async function createSnapshot({ snapshot }: CreateSnapshotParams) {
     }
   }
 
+  // @ts-expect-error
   return result;
 }

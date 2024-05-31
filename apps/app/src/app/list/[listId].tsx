@@ -18,8 +18,9 @@ type Props = {
   documentId: string;
 };
 
-const List: React.FC<Props> = ({ documentId }) => {
+const List: React.FC<Props> = () => {
   const { listId } = useLocalSearchParams();
+  const documentId = typeof listId === "string" ? listId : "";
   const documentKey = sodium.from_base64(
     "MTcyipWZ6Kiibd5fATw55i9wyEU7KbdDoTE_MRgDR98"
   );
@@ -35,7 +36,7 @@ const List: React.FC<Props> = ({ documentId }) => {
 
   const [state, send] = useYjsSync({
     yDoc: yDocRef.current,
-    documentId: listId,
+    documentId,
     signatureKeyPair: authorKeyPair,
     websocketEndpoint,
     websocketSessionKey: "your-secret-session-key",
