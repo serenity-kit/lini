@@ -1,7 +1,6 @@
 import * as opaque from "@serenity-kit/opaque";
 import { TRPCError } from "@trpc/server";
 import * as trpcExpress from "@trpc/server/adapters/express";
-import cookie from "cookie";
 import cookieParser from "cookie-parser";
 import cors, { CorsOptions } from "cors";
 import "dotenv/config";
@@ -25,7 +24,6 @@ import { getDocumentMembers } from "./db/getDocumentMembers.js";
 import { getDocumentsByUserId } from "./db/getDocumentsByUserId.js";
 import { getLoginAttempt } from "./db/getLoginAttempt.js";
 import { getOrCreateDocument } from "./db/getOrCreateDocument.js";
-import { getSession } from "./db/getSession.js";
 import { getUser } from "./db/getUser.js";
 import { getUserByUsername } from "./db/getUserByUsername.js";
 import { updateDocument } from "./db/updateDocument.js";
@@ -105,7 +103,7 @@ const appRouter = router({
       })
     )
     .mutation(async (opts) => {
-      const documentId = "TODO"
+      const documentId = "TODO";
       const document = await createDocument({
         userId: opts.ctx.session.userId,
         documentId,
@@ -286,38 +284,39 @@ const server = app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
 });
 
+webSocketServer.on(
+  "connection",
+  createWebSocketConnection({
+    getDocument: getOrCreateDocument,
+    createSnapshot: createSnapshot,
+    createUpdate: createUpdate,
+    hasAccess: async () => true,
+    hasBroadcastAccess: async ({ websocketSessionKeys }) =>
+      websocketSessionKeys.map(() => true),
+    logging: "error",
+  })
+);
+
 server.on("upgrade", async (request, socket, head) => {
   // validating the session
-  const cookies = cookie.parse(request.headers.cookie || "");
-  const sessionToken = cookies.session;
-  if (!sessionToken) {
-    socket.write("HTTP/1.1 401 Unauthorized\r\n\r\n");
-    socket.destroy();
-    return;
-  }
-  const session = await getSession(sessionToken);
-  if (!session) {
-    socket.write("HTTP/1.1 401 Unauthorized\r\n\r\n");
-    socket.destroy();
-    return;
-  }
-
-  webSocketServer.on(
-    "connection",
-    createWebSocketConnection({
-      getDocument: getOrCreateDocument,
-      createSnapshot: createSnapshot,
-      createUpdate: createUpdate,
-      hasAccess: async () => true,
-      hasBroadcastAccess: async ({ websocketSessionKeys }) =>
-        websocketSessionKeys.map(() => true),
-      logging: "error",
-    })
-  );
+  // const cookies = cookie.parse(request.headers.cookie || "");
+  // const sessionToken = cookies.session;
+  // if (!sessionToken) {
+  //   socket.write("HTTP/1.1 401 Unauthorized\r\n\r\n");
+  //   socket.destroy();
+  //   return;
+  // }
+  // const session = await getSession(sessionToken);
+  // if (!session) {
+  //   socket.write("HTTP/1.1 401 Unauthorized\r\n\r\n");
+  //   socket.destroy();
+  //   return;
+  // }
 
   webSocketServer.handleUpgrade(request, socket, head, (currentSocket) => {
     // @ts-expect-error adding the session to the socket so we can access it in the network adapter
-    currentSocket.session = session;
+    // currentSocket.session = session;
+
     webSocketServer.emit("connection", currentSocket, request);
   });
 });

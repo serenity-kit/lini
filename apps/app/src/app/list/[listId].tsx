@@ -1,3 +1,4 @@
+import { useLocalSearchParams } from "expo-router";
 import React, { useRef, useState } from "react";
 import { View } from "react-native";
 import sodium, { KeyPair } from "react-native-libsodium";
@@ -10,7 +11,7 @@ import { useYArray } from "../../hooks/useYArray";
 
 const websocketEndpoint =
   process.env.NODE_ENV === "development"
-    ? "ws://localhost:4000"
+    ? "ws://localhost:3030"
     : "wss://secsync.fly.dev";
 
 type Props = {
@@ -18,6 +19,7 @@ type Props = {
 };
 
 const List: React.FC<Props> = ({ documentId }) => {
+  const { listId } = useLocalSearchParams();
   const documentKey = sodium.from_base64(
     "MTcyipWZ6Kiibd5fATw55i9wyEU7KbdDoTE_MRgDR98"
   );
@@ -33,7 +35,7 @@ const List: React.FC<Props> = ({ documentId }) => {
 
   const [state, send] = useYjsSync({
     yDoc: yDocRef.current,
-    documentId,
+    documentId: listId,
     signatureKeyPair: authorKeyPair,
     websocketEndpoint,
     websocketSessionKey: "your-secret-session-key",

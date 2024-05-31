@@ -90,7 +90,5 @@ Users use OPAQUE to authenticate with the server. After Login the server creates
 - fix prettier
 - fix all ts issues
 - setup CI (ts:check)
-- setup backend
 - implement auth (from jumpstart)
-- setup sync for the list
 - add invitation scheme
