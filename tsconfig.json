@@ -1,49 +1,11 @@
 {
-  "$schema": "https://json.schemastore.org/tsconfig",
-  "display": "Expo",
+  "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "allowJs": true,
-    "esModuleInterop": true,
-    "jsx": "react-native",
-    "lib": ["DOM", "ESNext"],
-    "moduleResolution": "node",
-    "module": "ES2020",
-    "noEmit": true,
-    "resolveJsonModule": true,
-    "allowImportingTsExtensions": true,
-    "skipLibCheck": true,
-    "composite": false,
-    "declaration": false,
-    "declarationMap": false,
-    "target": "ESNext",
     "strict": true,
-    "noUncheckedIndexedAccess": true,
-    "sourceMap": true,
-    "strictNullChecks": true,
-    "incremental": true,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "noErrorTruncation": true,
-    "isolatedModules": true,
-    "plugins": [
-      {
-        "name": "@effect/language-service",
-        "diagnostics": {
-          "1002": "none"
-        }
-      }
-    ]
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["src/rnr/*"]
+    }
   },
-  "exclude": [
-    "node_modules",
-    "babel.config.js",
-    "metro.config.js",
-    "jest.config.js"
-  ],
-
-  "baseUrl": ".",
-  "paths": {
-    "~/*": ["src"]
-  },
-  "extends": "expo/tsconfig.base"
+  "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"]
 }
