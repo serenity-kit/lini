@@ -1,7 +1,10 @@
 import React, { useRef, useState } from "react";
-import { Pressable, Text, TextInput, View } from "react-native";
+import { View } from "react-native";
 import sodium, { KeyPair } from "react-native-libsodium";
 import * as Yjs from "yjs";
+import { Button } from "~/components/ui/button";
+import { Input } from "~/components/ui/input";
+import { Text } from "~/components/ui/text";
 import { useYArray } from "../../hooks/useYArray";
 
 const websocketEndpoint =
@@ -58,12 +61,12 @@ const List: React.FC<Props> = ({ documentId }) => {
     <>
       <View>
         <View>
-          <TextInput
+          <Input
             placeholder="What needs to be done?"
             onChangeText={(value) => setNewTodoText(value)}
             value={newTodoText}
           />
-          <Pressable
+          <Button
             className="add"
             onPress={(event) => {
               event.preventDefault();
@@ -72,7 +75,7 @@ const List: React.FC<Props> = ({ documentId }) => {
             }}
           >
             <Text>Add</Text>
-          </Pressable>
+          </Button>
         </View>
 
         <View>
@@ -82,7 +85,7 @@ const List: React.FC<Props> = ({ documentId }) => {
                 <View className="edit">
                   <Text>{entry}</Text>
                 </View>
-                <Pressable
+                <Button
                   className="destroy"
                   onPress={() => {
                     yTodos.delete(index, 1);
