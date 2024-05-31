@@ -9,13 +9,13 @@
     ]
   },
   "devDependencies": {
-    "eslint": "^8.56.0",
+    "eslint": "^9.3.0",
     "fs-extra": "^11.2.0",
-    "husky": "^8.0.1",
-    "lint-staged": "^13.0.3",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.5",
     "postinstall-postinstall": "^2.1.0",
-    "prettier": "2.7.1",
-    "prettier-plugin-tailwindcss": "^0.1.13"
+    "prettier": "3.2.5",
+    "prettier-plugin-tailwindcss": "^0.6.0"
   },
   "scripts": {
     "prepare": "husky install",
