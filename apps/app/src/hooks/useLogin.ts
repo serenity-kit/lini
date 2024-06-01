@@ -9,9 +9,6 @@ type LoginParams = {
 };
 
 export const useLogin = () => {
-  // TODO
-  return { isPending: true, login: () => {} };
-
   const loginStartMutation = trpc.loginStart.useMutation();
   const loginFinishMutation = trpc.loginFinish.useMutation();
 

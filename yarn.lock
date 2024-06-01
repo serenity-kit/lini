@@ -2007,10 +2007,10 @@
   resolved "https://registry.yarnpkg.com/@trpc/client/-/client-11.0.0-rc.382.tgz#0bb2222aaa5cbbb7c8d5c9cdde21572bd148a20e"
   integrity sha512-O+MSRed5r8AJJ+j3peZkd/b7WINEkhKaFilRuPH8VQsrlMZToxUzQl9aShPIgnOhhQGxvWqdh2lXwUvrFCea/A==
 
-"@trpc/react-query@^10.45.2":
-  version "10.45.2"
-  resolved "https://registry.yarnpkg.com/@trpc/react-query/-/react-query-10.45.2.tgz#22564b370a1fb8920ba3a1554f4149a151039198"
-  integrity sha512-BAqb9bGZIscroradlNx+Cc9522R+idY3BOSf5z0jHUtkxdMbjeGKxSSMxxu7JzoLqSIEC+LVzL3VvF8sdDWaZQ==
+"@trpc/react-query@^11.0.0-rc.382":
+  version "11.0.0-rc.382"
+  resolved "https://registry.yarnpkg.com/@trpc/react-query/-/react-query-11.0.0-rc.382.tgz#2ab7c9282d4f9a57b6e25bf601ec532f4fe0979d"
+  integrity sha512-VlYe+ufYy/hWQFpBEG2MHKsGrGmt2oqqPBO4lHWBpuCcQnzttvsW+LkBkMoy6qZqFcrGyQJC8KQXHO6njmfmZQ==
 
 "@trpc/server@^11.0.0-rc.382":
   version "11.0.0-rc.382"

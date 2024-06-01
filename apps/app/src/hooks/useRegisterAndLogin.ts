@@ -9,9 +9,6 @@ type RegisterParams = {
 };
 
 export const useRegisterAndLogin = () => {
-  // TODO
-  return { isPending: true, registerAndLogin: () => {} };
-
   const [isPending, setIsPending] = useState(false);
   const registerStartMutation = trpc.registerStart.useMutation();
   const registerFinishMutation = trpc.registerFinish.useMutation();

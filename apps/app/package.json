@@ -13,6 +13,7 @@
     "@react-native/assets-registry": "0.75.0-main",
     "@tanstack/react-query": "^5.40.0",
     "@trpc/client": "^11.0.0-rc.382",
+    "@trpc/react-query": "^11.0.0-rc.382",
     "babel-preset-expo": "~11.0.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",

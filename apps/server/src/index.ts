@@ -53,7 +53,7 @@ const corsOptions: CorsOptions = {
   origin:
     process.env.NODE_ENV === "production"
       ? "https://livelist.vercel.app"
-      : "http://localhost:5173",
+      : "http://localhost:8081",
   credentials: true,
 };
 
