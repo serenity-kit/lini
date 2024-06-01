@@ -19,11 +19,11 @@ import { createUser } from "./db/createUser.js";
 import { deleteLoginAttempt } from "./db/deleteLoginAttempt.js";
 import { deleteSession } from "./db/deleteSession.js";
 import { getDocument } from "./db/getDocument.js";
+import { getDocumentData } from "./db/getDocumentData.js";
 import { getDocumentInvitation } from "./db/getDocumentInvitation.js";
 import { getDocumentMembers } from "./db/getDocumentMembers.js";
 import { getDocumentsByUserId } from "./db/getDocumentsByUserId.js";
 import { getLoginAttempt } from "./db/getLoginAttempt.js";
-import { getOrCreateDocument } from "./db/getOrCreateDocument.js";
 import { getUser } from "./db/getUser.js";
 import { getUserByUsername } from "./db/getUserByUsername.js";
 import { updateDocument } from "./db/updateDocument.js";
@@ -103,7 +103,7 @@ const appRouter = router({
       })
     )
     .mutation(async (opts) => {
-      const documentId = "TODO";
+      const documentId = generateId();
       const document = await createDocument({
         userId: opts.ctx.session.userId,
         documentId,
@@ -287,7 +287,7 @@ const server = app.listen(PORT, () => {
 webSocketServer.on(
   "connection",
   createWebSocketConnection({
-    getDocument: getOrCreateDocument,
+    getDocument: getDocumentData,
     createSnapshot: createSnapshot,
     createUpdate: createUpdate,
     hasAccess: async () => true,

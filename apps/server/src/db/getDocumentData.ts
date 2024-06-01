@@ -2,27 +2,18 @@ import { GetDocumentParams } from "secsync";
 import { serializeSnapshot, serializeUpdates } from "../utils/serialize.js";
 import { prisma } from "./prisma.js";
 
-export async function getOrCreateDocument({
+export async function getDocumentData({
   documentId,
   knownSnapshotId,
   knownSnapshotUpdateClocks,
   mode,
 }: GetDocumentParams) {
   return prisma.$transaction(async (prisma) => {
-    const doc = await prisma.document.findUnique({
+    const doc = await prisma.document.findUniqueOrThrow({
       where: { id: documentId },
       include: { activeSnapshot: { select: { id: true } } },
     });
 
-    if (!doc) {
-      await prisma.document.create({
-        data: { id: documentId, name: "TODO" },
-      });
-      return {
-        updates: [],
-        snapshotProofChain: [],
-      };
-    }
     if (!doc.activeSnapshot) {
       return {
         updates: [],
@@ -54,11 +45,11 @@ export async function getOrCreateDocument({
     let lastKnownVersion: number | undefined = undefined;
     // in case the last known snapshot is the current one, try to find the lastKnownVersion number
     if (knownSnapshotId === doc.activeSnapshot.id) {
-      const updateIds = Object.entries(knownSnapshotUpdateClocks).map(
-        ([pubKey, clock]) => {
-          return `${knownSnapshotId}-${pubKey}-${clock}`;
-        }
-      );
+      const updateIds = knownSnapshotUpdateClocks
+        ? Object.entries(knownSnapshotUpdateClocks).map(([pubKey, clock]) => {
+            return `${knownSnapshotId}-${pubKey}-${clock}`;
+          })
+        : [];
       const lastUpdate = await prisma.update.findFirst({
         where: {
           id: { in: updateIds },
@@ -73,7 +64,7 @@ export async function getOrCreateDocument({
     // fetch the active snapshot with
     // - all updates after the last known version if there is one and
     // - all updates if there is none
-    const activeSnapshot = await prisma.snapshot.findUnique({
+    const activeSnapshot = await prisma.snapshot.findUniqueOrThrow({
       where: { id: doc.activeSnapshot.id },
       include: {
         updates:

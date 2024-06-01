@@ -1,7 +1,9 @@
 import { Link } from "expo-router";
 import * as React from "react";
 import { View } from "react-native";
+import { Card } from "~/components/ui/card";
 import { Text } from "~/components/ui/text";
+import { CreateListForm } from "../components/createListForm";
 import { trpc } from "../utils/trpc";
 
 const Lists: React.FC = () => {
@@ -16,16 +18,12 @@ const Lists: React.FC = () => {
     },
   });
 
+  const documentsQuery = trpc.documents.useQuery(undefined, {
+    refetchInterval: 5000,
+  });
+
   return (
     <View>
-      <Link
-        href={{
-          pathname: "/list/[listId]",
-          params: { listId: "wow" },
-        }}
-      >
-        LIST A
-      </Link>
       <Link href="/login">
         <Text>Login</Text>
       </Link>
@@ -34,6 +32,18 @@ const Lists: React.FC = () => {
       <View>
         <Text>{meQuery.data?.username}</Text>
       </View>
+
+      <CreateListForm />
+
+      <div className="flex flex-col gap-2 pt-4">
+        {documentsQuery.data?.map((doc) => (
+          <Link href={`/list/${doc.id}`} key={doc.id}>
+            <Card className="flex flex-col items-start gap-2 rounded-lg border p-5 text-left text-xl transition-all hover:bg-accent">
+              {doc.name}
+            </Card>
+          </Link>
+        ))}
+      </div>
     </View>
   );
 };
