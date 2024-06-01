@@ -9,7 +9,7 @@ docker-compose up
 
 ```sh
 # in another tab
-cd apps/backend
+cd apps/server
 cp .env.example .env
 npx @serenity-kit/opaque@latest create-server-setup
 # copy the string value as OPAQUE_SERVER_SETUP .env
