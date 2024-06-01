@@ -4,7 +4,9 @@
   "main": "./src/AppEntry.ts",
   "scripts": {
     "dev": "EXPO_USE_METRO_WORKSPACE_ROOT=1 expo start --dev-client",
-    "ts:check": "tsc --noEmit"
+    "ts:check": "tsc --noEmit",
+    "test": "echo \"Error: no test specified\"",
+    "lint": "eslint . --ext .ts,.tsx"
   },
   "dependencies": {
     "@effect/schema": "^0.67.15",

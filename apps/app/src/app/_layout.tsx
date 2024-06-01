@@ -6,10 +6,9 @@ import {
   QueryClientProvider,
 } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
-import { Stack } from "expo-router";
+import { SplashScreen, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import * as React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { NAV_THEME } from "~/lib/constants";
 import { useColorScheme } from "~/lib/useColorScheme";
@@ -29,9 +28,20 @@ const DARK_THEME: Theme = {
 // TODO PROD API URL
 const apiUrl = "http://localhost:3030/api";
 
+// Catch any errors thrown by the Layout component.
+export { ErrorBoundary } from "expo-router";
+
+SplashScreen.preventAutoHideAsync();
+
 export default function Layout() {
   const { isDarkColorScheme } = useColorScheme();
   const isLoadingComplete = useLoadingLibsodium();
+
+  useEffect(() => {
+    if (isLoadingComplete) {
+      SplashScreen.hideAsync();
+    }
+  }, [isLoadingComplete]);
 
   const [queryClient] = useState(
     () =>

@@ -1,9 +1,9 @@
 import { router, useLocalSearchParams } from "expo-router";
 import { useState } from "react";
 import { View } from "react-native";
-import { AuthForm } from "src/components/authForm";
 import { Text } from "~/components/ui/text";
 import { AlertCircle } from "~/lib/icons/AlertCircle";
+import { AuthForm } from "../components/authForm";
 import { useLogin } from "../hooks/useLogin";
 
 const Login = () => {

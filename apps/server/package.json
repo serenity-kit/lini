@@ -8,7 +8,9 @@
     "build:deploy": "rm -rf build && pnpm deploy --filter=server --prod build",
     "build": "pnpm run build:ts && pnpm build:deploy",
     "start:prod": "PORT=$PORT NODE_ENV=production node ./dist/index.js",
-    "ts:check": "tsc --noEmit"
+    "ts:check": "tsc --noEmit",
+    "test": "echo \"Error: no test specified\"",
+    "lint": "eslint . --ext .ts,.tsx"
   },
   "dependencies": {
     "@prisma/client": "5.14.0",
