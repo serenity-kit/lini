@@ -87,8 +87,8 @@ Users use OPAQUE to authenticate with the server. After Login the server creates
 
 ## Todos
 
-- fix prettier
 - fix all ts issues
 - setup CI (ts:check)
+- implement frontend from jumpstart
 - implement auth (from jumpstart)
 - add invitation scheme

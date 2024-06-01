@@ -5,7 +5,7 @@ import cookieParser from "cookie-parser";
 import cors, { CorsOptions } from "cors";
 import "dotenv/config";
 import express from "express";
-import { createWebSocketConnection } from "secsync";
+import { createWebSocketConnection } from "secsync-server";
 import { WebSocketServer } from "ws";
 import { z } from "zod";
 import { addUserToDocument } from "./db/addUserToDocument.js";

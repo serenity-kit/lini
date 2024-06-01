@@ -5479,7 +5479,7 @@ levn@^0.4.1:
     prelude-ls "^1.2.1"
     type-check "~0.4.0"
 
-lib0@^0.2.85, lib0@^0.2.86, lib0@^0.2.93:
+lib0@^0.2.85, lib0@^0.2.86, lib0@^0.2.94:
   version "0.2.94"
   resolved "https://registry.yarnpkg.com/lib0/-/lib0-0.2.94.tgz#fc28b4b65f816599f1e2f59d3401e231709535b3"
   integrity sha512-hZ3p54jL4Wpu7IOg26uC7dnEWiMyNlUrb9KoG7+xYs45WkQwpVvKFndVq2+pqLYKe1u8Fp3+zAfZHVvTK34PvQ==
@@ -7565,24 +7565,32 @@ schema-utils@^4.0.1:
     ajv-formats "^2.1.1"
     ajv-keywords "^5.1.0"
 
-secsync-react-yjs@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/secsync-react-yjs/-/secsync-react-yjs-0.3.0.tgz#d65e04771b68abc86b413424554da136f6e773ae"
-  integrity sha512-Am/ayu55OCONizj9+uM2DIQ+AWsWwc8L1fmM7p88ops8/uBmA7xHbD9rjZk+FCuj0MpYtYiBYSGEQmdXxzj3yw==
+secsync-react-yjs@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/secsync-react-yjs/-/secsync-react-yjs-0.4.0.tgz#aa35fc5c8a9c78d69c4470213e91bae94ecaa888"
+  integrity sha512-xdBVxFSbuc9pTmvRN+3AXqmeW2WgxFrlPW7sHazSX9o675ai99O/Tf9YdBT/ls41XaCU6hxmI/Oc9ETHxtkziw==
   dependencies:
     "@xstate/react" "^4.1.1"
-    lib0 "^0.2.93"
+    lib0 "^0.2.94"
     y-protocols "^1.0.6"
 
-secsync@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/secsync/-/secsync-0.3.0.tgz#2a1837cdf0bb055f6761f041064418ee66a87abe"
-  integrity sha512-Or2kQeoH8/EBVKPVfEBP75JxgtBqgO2nSBmvCrvFm/T2dETNVJqYYL2sAHuR1QYQm7gC/L9kdM+h5eamVguk/w==
+secsync-server@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/secsync-server/-/secsync-server-0.4.0.tgz#37c87e43453154635bbfee2bc93ba6e624a1e005"
+  integrity sha512-ZoK+aOvVcDFEd4+cZeOiumgB2klPXHqxeZf7otuXkzY7ZI4JG7egu8aN2oed+iJqAWxbNaBLKRQdToZ+o9C68g==
+  dependencies:
+    canonicalize "^2.0.0"
+    libsodium-wrappers "^0.7.13"
+
+secsync@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/secsync/-/secsync-0.4.0.tgz#b07eb3bcb92e3b47d8e90fcc9c81ab3c152108ad"
+  integrity sha512-b5pMmjcJKVMyZNZcXDF8mADTy5zxOl1ABP3zvc7lVcWt38d0ynEbvQSxJtaQ9gbRTYwEviGuDU+uMsLCy9AVEw==
   dependencies:
     canonicalize "^2.0.0"
     libsodium-wrappers "^0.7.13"
     xstate "^5.13.0"
-    zod "^3.23.4"
+    zod "^3.23.8"
 
 selfsigned@^2.4.1:
   version "2.4.1"
@@ -8997,7 +9005,7 @@ yocto-queue@^0.1.0:
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
 
-zod@^3.23.4, zod@^3.23.8:
+zod@^3.23.8:
   version "3.23.8"
   resolved "https://registry.yarnpkg.com/zod/-/zod-3.23.8.tgz#e37b957b5d52079769fb8097099b592f0ef4067d"
   integrity sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==
