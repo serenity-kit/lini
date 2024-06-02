@@ -87,7 +87,6 @@ Users use OPAQUE to authenticate with the server. After Login the server creates
 
 ## Todos
 
-- setup CI (ts:check)
 - generate keys and store them locally
 - store keys on lockbox
 - add invitation scheme

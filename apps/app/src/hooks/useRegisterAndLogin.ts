@@ -40,7 +40,7 @@ export const useRegisterAndLogin = () => {
 
       const result = await login({ userIdentifier, password });
       return result;
-    } catch (error) {
+    } catch (_error) {
       return null;
     } finally {
       setIsPending(false);

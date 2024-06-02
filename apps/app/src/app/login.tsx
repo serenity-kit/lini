@@ -15,11 +15,11 @@ const Login = () => {
     <View className="max-w-md mr-auto ml-auto">
       <AuthForm
         onSubmit={async ({ password, username }) => {
-          const sessionKey = await login({
+          const loginResult = await login({
             userIdentifier: username,
             password,
           });
-          if (!sessionKey) {
+          if (loginResult === null) {
             setError("Failed to login");
             return;
           }

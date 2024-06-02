@@ -15,11 +15,11 @@ const Register = () => {
     <View className="max-w-md mr-auto ml-auto">
       <AuthForm
         onSubmit={async ({ password, username }) => {
-          const sessionKey = await registerAndLogin({
+          const result = await registerAndLogin({
             userIdentifier: username,
             password,
           });
-          if (!sessionKey) {
+          if (!result) {
             setError("Failed to register");
             return;
           }
