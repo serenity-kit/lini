@@ -8,12 +8,14 @@ import { createLoginAttempt } from "../db/createLoginAttempt.js";
 import { createOrRefreshDocumentInvitation } from "../db/createOrRefreshDocumentInvitation.js";
 import { createSession } from "../db/createSession.js";
 import { createUser } from "../db/createUser.js";
+import { createUserLocker } from "../db/createUserLocker.js";
 import { deleteLoginAttempt } from "../db/deleteLoginAttempt.js";
 import { deleteSession } from "../db/deleteSession.js";
 import { getDocument } from "../db/getDocument.js";
 import { getDocumentInvitation } from "../db/getDocumentInvitation.js";
 import { getDocumentMembers } from "../db/getDocumentMembers.js";
 import { getDocumentsByUserId } from "../db/getDocumentsByUserId.js";
+import { getLatestUserLocker } from "../db/getLatestUserLocker.js";
 import { getLoginAttempt } from "../db/getLoginAttempt.js";
 import { getUser } from "../db/getUser.js";
 import { getUserByUsername } from "../db/getUserByUsername.js";
@@ -136,6 +138,33 @@ export const appRouter = router({
     await deleteSession(opts.ctx.session.token);
     opts.ctx.clearCookie();
   }),
+
+  getLatestUserLocker: protectedProcedure.query(async (opts) => {
+    const locker = await getLatestUserLocker(opts.ctx.session.userId);
+    return locker;
+  }),
+
+  createUserLocker: protectedProcedure
+    .input(
+      z.object({
+        ciphertext: z.string(),
+        commitment: z.string(),
+        nonce: z.string(),
+        clock: z.number(),
+      })
+    )
+    .mutation(async (opts) => {
+      const { ciphertext, commitment, nonce, clock } = opts.input;
+
+      const locker = await createUserLocker({
+        userId: opts.ctx.session.userId,
+        ciphertext,
+        commitment,
+        nonce,
+        clock,
+      });
+      return { id: locker.id };
+    }),
 
   registerStart: publicProcedure
     .input(RegisterStartParams)

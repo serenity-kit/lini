@@ -1,10 +1,12 @@
 import { Link } from "expo-router";
 import * as React from "react";
 import { View } from "react-native";
+import { Button } from "~/components/ui/button";
 import { Card } from "~/components/ui/card";
 import { Text } from "~/components/ui/text";
 import { CreateListForm } from "../components/createListForm";
 import { Logout } from "../components/logout";
+import { useLocker } from "../hooks/useLocker";
 import { trpc } from "../utils/trpc";
 
 const Lists: React.FC = () => {
@@ -23,6 +25,16 @@ const Lists: React.FC = () => {
     refetchInterval: 5000,
   });
 
+  // const lockerKey = sodium.from_base64(
+  //   "MTcyipWZ6Kiibd5fATw55i9wyEU7KbdDoTE_MRgDR98"
+  // );
+
+  const { content, addDocumentKey } = useLocker(
+    "MTcyipWZ6Kiibd5fATw55i9wyEU7KbdDoTE_MRgDR98"
+  );
+
+  console.log("lockerContent", content);
+
   return (
     <View>
       <Link href="/login">
@@ -37,6 +49,16 @@ const Lists: React.FC = () => {
       <Logout />
 
       <CreateListForm />
+
+      <Button
+        onPress={() => {
+          // random number for now
+          const id = Math.floor(Math.random() * 10000000).toString();
+          addDocumentKey(id, "123");
+        }}
+      >
+        <Text>GENERATE</Text>
+      </Button>
 
       <div className="flex flex-col gap-2 pt-4">
         {documentsQuery.data?.map((doc) => (
