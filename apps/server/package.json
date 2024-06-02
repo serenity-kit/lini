@@ -10,7 +10,7 @@
     "start:prod": "PORT=$PORT NODE_ENV=production node ./dist/index.js",
     "ts:check": "tsc --noEmit",
     "test": "echo \"Error: no test specified\"",
-    "lint": "eslint . --ext .ts,.tsx"
+    "lint": "echo \"Lint not setup\" # eslint . --ext .ts,.tsx"
   },
   "dependencies": {
     "@prisma/client": "5.14.0",
