@@ -27,8 +27,6 @@ export const createUserLocker = async ({
         },
       });
 
-      console.log("userLocker", userLocker, clock);
-
       if (userLocker === null) {
         if (clock !== 0) {
           throw new Error("Invalid clock, expected 0");

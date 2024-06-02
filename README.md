@@ -87,10 +87,11 @@ Users use OPAQUE to authenticate with the server. After Login the server creates
 
 ## Todos
 
-- generate keys and store them locally
-- store keys on lockbox
-- add invitation scheme
-- add retry for locker in case write fails (invalid clock)
-
 - store data locally (api in secsync)
+- encrypt list name
+- add invitation scheme
+- allow to delete list
+- add retry for locker in case write fails (invalid clock)
+- encrypt MMKV storage on iOS and Android
+
 - fix websocket session auth in secsync

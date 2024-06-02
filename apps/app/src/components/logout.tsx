@@ -3,6 +3,7 @@ import { router } from "expo-router";
 import { Alert } from "react-native";
 import { Button } from "~/components/ui/button";
 import { Text } from "~/components/ui/text";
+import { lockerStorage } from "../hooks/useLocker";
 import { trpc } from "../utils/trpc";
 
 export const Logout: React.FC = () => {
@@ -14,11 +15,11 @@ export const Logout: React.FC = () => {
       // not perfect but good enough since the local changes are fast
       disabled={logoutMutation.isPending}
       onPress={async () => {
-        // removeLocalDb(); // TODO
+        lockerStorage.clearAll();
         logoutMutation.mutate(undefined, {
           onSuccess: () => {
             // delete again to verify in case new info came in during the logout request
-            // removeLocalDb(); // TODO
+            lockerStorage.clearAll();
             queryClient.invalidateQueries();
             router.navigate("/login");
           },

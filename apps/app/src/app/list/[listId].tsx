@@ -7,6 +7,7 @@ import * as Yjs from "yjs";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Text } from "~/components/ui/text";
+import { useLocker } from "../../hooks/useLocker";
 import { useYArray } from "../../hooks/useYArray";
 
 const websocketEndpoint =
@@ -21,9 +22,6 @@ type Props = {
 const List: React.FC<Props> = () => {
   const { listId } = useLocalSearchParams();
   const documentId = typeof listId === "string" ? listId : "";
-  const documentKey = sodium.from_base64(
-    "MTcyipWZ6Kiibd5fATw55i9wyEU7KbdDoTE_MRgDR98"
-  );
 
   const [authorKeyPair] = useState<KeyPair>(() => {
     return sodium.crypto_sign_keypair();
@@ -33,6 +31,8 @@ const List: React.FC<Props> = () => {
   const yTodos: Yjs.Array<string> = yDocRef.current.getArray("todos");
   const todos = useYArray(yTodos);
   const [newTodoText, setNewTodoText] = useState("");
+  const { content } = useLocker();
+  const documentKey = sodium.from_base64(content[`document:${documentId}`]);
 
   const [state, send] = useYjsSync({
     yDoc: yDocRef.current,
@@ -94,7 +94,9 @@ const List: React.FC<Props> = () => {
                   onPress={() => {
                     yTodos.delete(index, 1);
                   }}
-                />
+                >
+                  <Text>x</Text>
+                </Button>
               </View>
             );
           })}
