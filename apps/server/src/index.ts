@@ -1,11 +1,11 @@
 import * as opaque from "@serenity-kit/opaque";
 import { TRPCError } from "@trpc/server";
 import * as trpcExpress from "@trpc/server/adapters/express";
+import cookie from "cookie";
 import cookieParser from "cookie-parser";
 import cors, { CorsOptions } from "cors";
 import "dotenv/config";
 import express from "express";
-import { createWebSocketConnection } from "secsync-server";
 import { WebSocketServer } from "ws";
 import { z } from "zod";
 import { addUserToDocument } from "./db/addUserToDocument.js";
@@ -24,8 +24,10 @@ import { getDocumentInvitation } from "./db/getDocumentInvitation.js";
 import { getDocumentMembers } from "./db/getDocumentMembers.js";
 import { getDocumentsByUserId } from "./db/getDocumentsByUserId.js";
 import { getLoginAttempt } from "./db/getLoginAttempt.js";
+import { getSession } from "./db/getSession.js";
 import { getUser } from "./db/getUser.js";
 import { getUserByUsername } from "./db/getUserByUsername.js";
+import { getUserHasAccessToDocument } from "./db/getUserHasAccessToDocument.js";
 import { updateDocument } from "./db/updateDocument.js";
 import {
   LoginFinishParams,
@@ -33,6 +35,7 @@ import {
   RegisterFinishParams,
   RegisterStartParams,
 } from "./schema.js";
+import { createWebSocketConnection } from "./secsync-server/createWebsocketConnection.js";
 import { generateId } from "./utils/generateId/generateId.js";
 import { getOpaqueServerSetup } from "./utils/getOpaqueServerSetup/getOpaqueServerSetup.js";
 import {
@@ -290,8 +293,14 @@ webSocketServer.on(
     getDocument: getDocumentData,
     createSnapshot: createSnapshot,
     createUpdate: createUpdate,
-    hasAccess: async () => true,
-    hasBroadcastAccess: async ({ websocketSessionKeys }) =>
+    // @ts-expect-error
+    hasAccess: async ({ documentId, websocketSessionKey, connection }) => {
+      return getUserHasAccessToDocument({
+        documentId,
+        userId: connection.session.userId,
+      });
+    },
+    hasBroadcastAccess: async ({ documentId, websocketSessionKeys }) =>
       websocketSessionKeys.map(() => true),
     logging: "error",
   })
@@ -299,23 +308,23 @@ webSocketServer.on(
 
 server.on("upgrade", async (request, socket, head) => {
   // validating the session
-  // const cookies = cookie.parse(request.headers.cookie || "");
-  // const sessionToken = cookies.session;
-  // if (!sessionToken) {
-  //   socket.write("HTTP/1.1 401 Unauthorized\r\n\r\n");
-  //   socket.destroy();
-  //   return;
-  // }
-  // const session = await getSession(sessionToken);
-  // if (!session) {
-  //   socket.write("HTTP/1.1 401 Unauthorized\r\n\r\n");
-  //   socket.destroy();
-  //   return;
-  // }
+  const cookies = cookie.parse(request.headers.cookie || "");
+  const sessionToken = cookies.session;
+  if (!sessionToken) {
+    socket.write("HTTP/1.1 401 Unauthorized\r\n\r\n");
+    socket.destroy();
+    return;
+  }
+  const session = await getSession(sessionToken);
+  if (!session) {
+    socket.write("HTTP/1.1 401 Unauthorized\r\n\r\n");
+    socket.destroy();
+    return;
+  }
 
   webSocketServer.handleUpgrade(request, socket, head, (currentSocket) => {
-    // currentSocket.session = session;
-
+    // @ts-expect-error adding the session to the socket so we can access it in the network adapter
+    currentSocket.session = session;
     webSocketServer.emit("connection", currentSocket, request);
   });
 });

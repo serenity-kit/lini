@@ -88,5 +88,9 @@ Users use OPAQUE to authenticate with the server. After Login the server creates
 ## Todos
 
 - setup CI (ts:check)
-- implement auth (from jumpstart)
+- generate keys and store them locally
+- store keys on lockbox
 - add invitation scheme
+
+- store data locally (api in secsync)
+- fix websocket session auth in secsync

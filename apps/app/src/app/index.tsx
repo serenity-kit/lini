@@ -4,6 +4,7 @@ import { View } from "react-native";
 import { Card } from "~/components/ui/card";
 import { Text } from "~/components/ui/text";
 import { CreateListForm } from "../components/createListForm";
+import { Logout } from "../components/logout";
 import { trpc } from "../utils/trpc";
 
 const Lists: React.FC = () => {
@@ -32,6 +33,8 @@ const Lists: React.FC = () => {
       <View>
         <Text>{meQuery.data?.username}</Text>
       </View>
+
+      <Logout />
 
       <CreateListForm />
 
