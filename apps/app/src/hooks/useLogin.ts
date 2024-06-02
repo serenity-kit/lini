@@ -35,7 +35,7 @@ export const useLogin = () => {
       if (!loginResult) {
         return null;
       }
-      const { sessionKey, finishLoginRequest } = loginResult;
+      const { sessionKey, finishLoginRequest, exportKey } = loginResult;
 
       const { success } = await loginFinishMutation.mutateAsync({
         finishLoginRequest,
@@ -44,7 +44,7 @@ export const useLogin = () => {
 
       queryClient.invalidateQueries();
 
-      return success ? sessionKey : null;
+      return success ? { sessionKey, exportKey } : null;
     } catch (error) {
       return null;
     } finally {
