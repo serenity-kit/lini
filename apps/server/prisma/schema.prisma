@@ -18,7 +18,20 @@ model User {
   loginAttempt       LoginAttempt?
   createdAt          DateTime           @default(now())
   documents          UsersOnDocuments[]
-  lala               String?
+  userLocker         UserLocker[]
+}
+
+model UserLocker {
+  id         String   @id @default(uuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  clock      Int
+  ciphertext String
+  nonce      String
+  commitment String
+  createdAt  DateTime @default(now())
+
+  @@unique([userId, clock])
 }
 
 model Session {
