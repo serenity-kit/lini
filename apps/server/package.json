@@ -8,20 +8,22 @@
     "build:deploy": "rm -rf build && pnpm deploy --filter=server --prod build",
     "build": "pnpm run build:ts && pnpm build:deploy",
     "start:prod": "PORT=$PORT NODE_ENV=production node ./dist/index.js",
-    "ts:check": "tsc --noEmit"
+    "ts:check": "tsc --noEmit",
+    "test": "echo \"Error: no test specified\"",
+    "lint": "echo \"Lint not setup\" # eslint . --ext .ts,.tsx"
   },
   "dependencies": {
     "@prisma/client": "5.14.0",
     "@serenity-kit/opaque": "^0.8.4",
-    "@trpc/server": "11.0.0-rc.366",
+    "@trpc/server": "^11.0.0-rc.382",
     "cookie": "^0.6.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "isomorphic-ws": "^5.0.0",
-    "secsync-server": "^0.4.0",
     "secsync": "^0.4.0",
+    "secsync-server": "^0.4.0",
     "ws": "^8.17.0",
     "zod": "^3.23.8"
   },

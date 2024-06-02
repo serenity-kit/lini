@@ -9,7 +9,7 @@ docker-compose up
 
 ```sh
 # in another tab
-cd apps/backend
+cd apps/server
 cp .env.example .env
 npx @serenity-kit/opaque@latest create-server-setup
 # copy the string value as OPAQUE_SERVER_SETUP .env
@@ -87,8 +87,10 @@ Users use OPAQUE to authenticate with the server. After Login the server creates
 
 ## Todos
 
-- fix all ts issues
 - setup CI (ts:check)
-- implement frontend from jumpstart
-- implement auth (from jumpstart)
+- generate keys and store them locally
+- store keys on lockbox
 - add invitation scheme
+
+- store data locally (api in secsync)
+- fix websocket session auth in secsync

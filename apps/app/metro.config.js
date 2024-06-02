@@ -6,8 +6,9 @@ const { withNativeWind } = require("nativewind/metro");
 
 const path = require("node:path");
 
+// from https://github.com/nativewind/nativewind/blob/main/examples/expo-router/metro.config.js
 /** @type {import('expo/metro-config').MetroConfig} */
-const config = getDefaultConfig(__dirname);
+const config = getDefaultConfig(__dirname, { isCSSEnabled: true });
 
 config.resolver.unstable_enableSymlinks = true;
 config.resolver.unstable_enablePackageExports = true;
@@ -23,4 +24,8 @@ config.resolver.nodeModulesPaths = [
   path.resolve(monorepoRoot, "node_modules"),
 ];
 
-module.exports = withNativeWind(config, { input: "./src/global.css" });
+module.exports = withNativeWind(config, {
+  input: "./src/global.css",
+  // from https://github.com/nativewind/nativewind/blob/main/examples/expo-router/metro.config.js
+  inlineRem: false,
+});
