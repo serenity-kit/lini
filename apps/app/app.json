@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Koriko",
-    "slug": "koriko",
+    "name": "Lini",
+    "slug": "lini",
     "owner": "naisho-gmbh",
     "scheme": "acme",
     "version": "1.0.0",
@@ -16,7 +16,7 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "app.koriko.app"
+      "bundleIdentifier": "app.lini.app"
     },
     "android": {
       "adaptiveIcon": {
@@ -33,7 +33,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "3ebc539c-5826-4baa-ab6c-a3e8fda78e46"
+        "projectId": "59758628-b173-4b85-9fab-f3593b274895"
       }
     }
   }

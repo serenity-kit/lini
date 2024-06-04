@@ -72,7 +72,7 @@ fly postgres connect -a koriki-db
 # list dbs
 \list;
 # connect to a db
-\c koriko;
+\c lini;
 # list tables
 \dt
 # query a table
