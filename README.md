@@ -117,15 +117,15 @@ TODO better version where the token is also never exposed to the network so not 
 
 ## Todos
 
+- use expo-secure-store for the sessionKey
+- encrypt MMKV storage on iOS and Android
+- todo list UI & structure
+- nav UI structure
+- logo and colors
 - deploy to production
-- invitation links should expire after 2 days
-- UI for invitations links
 
 - figure out how author keys are managed (tabs in serenity and possible change in secsync)
 - add retry for locker in case write fails (invalid clock)
-- use expo-secure-store for the sessionKey
-- encrypt MMKV storage on iOS and Android
-
 - allow to delete list (needs a tombstone and properly cleanup local stores)
 - allow to create lists locally
 
