@@ -1,5 +1,5 @@
 import { useLocalSearchParams } from "expo-router";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { View } from "react-native";
 import sodium, { KeyPair } from "react-native-libsodium";
 import { useYjsSync } from "secsync-react-yjs";
@@ -9,6 +9,12 @@ import { Input } from "~/components/ui/input";
 import { Text } from "~/components/ui/text";
 import { useLocker } from "../../hooks/useLocker";
 import { useYArray } from "../../hooks/useYArray";
+import { deserialize } from "../../utils/deserialize";
+import {
+  documentPendingChangesStorage,
+  documentStorage,
+} from "../../utils/documentStorage";
+import { serialize } from "../../utils/serialize";
 
 const websocketEndpoint =
   process.env.NODE_ENV === "development"
@@ -27,15 +33,53 @@ const List: React.FC<Props> = () => {
     return sodium.crypto_sign_keypair();
   });
 
-  const yDocRef = useRef<Yjs.Doc>(new Yjs.Doc());
+  // load initial data
+  const [initialData] = useState(() => {
+    const yDoc = new Yjs.Doc();
+    // load full document
+    const serializedDoc = documentStorage.getString(documentId);
+    if (serializedDoc) {
+      Yjs.applyUpdateV2(yDoc, deserialize(serializedDoc));
+    }
+
+    // loads the pendingChanges
+    const pendingChanges = documentPendingChangesStorage.getString(documentId);
+
+    return {
+      yDoc,
+      pendingChanges: pendingChanges ? deserialize(pendingChanges) : [],
+    };
+  });
+
+  const yDocRef = useRef<Yjs.Doc>(initialData.yDoc);
+
+  // update the document after every change (could be debounced)
+  useEffect(() => {
+    const onUpdate = (update: any) => {
+      const fullYDoc = Yjs.encodeStateAsUpdateV2(yDocRef.current);
+      documentStorage.set(documentId, serialize(fullYDoc));
+    };
+    yDocRef.current.on("updateV2", onUpdate);
+
+    return () => {
+      yDocRef.current.off("updateV2", onUpdate);
+    };
+  }, []);
+
   const yTodos: Yjs.Array<string> = yDocRef.current.getArray("todos");
   const todos = useYArray(yTodos);
   const [newTodoText, setNewTodoText] = useState("");
+
   const { content } = useLocker();
   const documentKey = sodium.from_base64(content[`document:${documentId}`]);
 
   const [state, send] = useYjsSync({
     yDoc: yDocRef.current,
+    pendingChanges: initialData.pendingChanges,
+    // callback to store the pending changes in
+    onPendingChangesUpdated: (allChanges) => {
+      documentPendingChangesStorage.set(documentId, serialize(allChanges));
+    },
     documentId,
     signatureKeyPair: authorKeyPair,
     websocketEndpoint,

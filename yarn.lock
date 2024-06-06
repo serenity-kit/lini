@@ -8568,27 +8568,27 @@ schema-utils@^4.0.1:
     ajv-formats "^2.1.1"
     ajv-keywords "^5.1.0"
 
-secsync-react-yjs@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/secsync-react-yjs/-/secsync-react-yjs-0.4.0.tgz#aa35fc5c8a9c78d69c4470213e91bae94ecaa888"
-  integrity sha512-xdBVxFSbuc9pTmvRN+3AXqmeW2WgxFrlPW7sHazSX9o675ai99O/Tf9YdBT/ls41XaCU6hxmI/Oc9ETHxtkziw==
+secsync-react-yjs@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/secsync-react-yjs/-/secsync-react-yjs-0.5.0.tgz#a30cc4340b0ebe999d6232c3dbe16e553fe5d0e4"
+  integrity sha512-UTTGIf3o50RCfsgVjASFYlqYp4j+OCfbDhAejFTipkyPqP868kheafKQpIA2bZU1gFPtmlKRoXW0DsYSPXK1yg==
   dependencies:
     "@xstate/react" "^4.1.1"
     lib0 "^0.2.94"
     y-protocols "^1.0.6"
 
-secsync-server@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/secsync-server/-/secsync-server-0.4.0.tgz#37c87e43453154635bbfee2bc93ba6e624a1e005"
-  integrity sha512-ZoK+aOvVcDFEd4+cZeOiumgB2klPXHqxeZf7otuXkzY7ZI4JG7egu8aN2oed+iJqAWxbNaBLKRQdToZ+o9C68g==
+secsync-server@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/secsync-server/-/secsync-server-0.5.0.tgz#9bb436e173b1b7c5b8d2bae8e801ed881188cecd"
+  integrity sha512-NkjfS5AVAF5qk6AFKJg6bRsDPUGvd/dYBavGSPDppJ8hv9DTg+6GhJc8bCDZ9Jr8uWnpLPyOcTMk6/oe4EIrAw==
   dependencies:
     canonicalize "^2.0.0"
     libsodium-wrappers "^0.7.13"
 
-secsync@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/secsync/-/secsync-0.4.0.tgz#b07eb3bcb92e3b47d8e90fcc9c81ab3c152108ad"
-  integrity sha512-b5pMmjcJKVMyZNZcXDF8mADTy5zxOl1ABP3zvc7lVcWt38d0ynEbvQSxJtaQ9gbRTYwEviGuDU+uMsLCy9AVEw==
+secsync@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/secsync/-/secsync-0.5.0.tgz#64541623c843cdde63c6ae608e130c18dfd45759"
+  integrity sha512-OdIP660UH2FVFBMnPzruW2LIEKbRc2L7rdqcnI/LWu2M7p+dTA+OzCZd87a09MxL0xIDx/7tUYkmwJZknlwo0w==
   dependencies:
     canonicalize "^2.0.0"
     libsodium-wrappers "^0.7.13"
