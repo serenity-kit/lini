@@ -118,6 +118,8 @@ TODO better version where the token is also never exposed to the network so not 
 ## Todos
 
 - allow to delete list (needs a tombstone)
+- invitation links should expire after 2 days
+- UI for invitations links
 
 - figure out how author keys are managed (tabs in serenity and possible change in secsync)
 - add retry for locker in case write fails (invalid clock)
