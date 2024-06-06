@@ -85,11 +85,41 @@ SELECT * FROM "Document";
 
 Users use OPAQUE to authenticate with the server. After Login the server creates a session and stores it as HTTP-Only Cookie. The session is used to authenticate the user for authenticated requests and also to connect to the Websocket.
 
+### Invitation
+
+Users can invite other users to a list via an invitation link.
+
+Creating an invitation link:
+
+```ts
+const seed = generateSeed();
+const (privKey, pubKey) = generateKeyPair(seed);
+const listKeyLockbox = encrypt(pubKey, listKey);
+const invitation = {
+  listId,
+  listKeyLockbox,
+  pubKey,
+};
+const encryptedInvitation = encrypt(invitation, sessionKey);
+```
+
+InvitationLink: `${token}/#accessKey=${seed}`
+
+Accepting an invitation:
+
+```ts
+const (privKey, pubKey) = generateKeyPair(seed);
+const encryptedInvitation getInvitationByToken(token);
+const invitation = decrypt(encryptedInvitation, sessionKey)
+const listKey = decrypt(invitation.listKeyLockbox, privKey)
+acceptInvitation(listId, listKey)
+```
+
 ## Todos
 
-- add invitation scheme
 - allow to delete list (needs a tombstone)
 
+- figure out how author keys are managed (tabs in serenity and possible change in secsync)
 - add retry for locker in case write fails (invalid clock)
 - store the list name locally (also with unsynced changes)
 - encrypt MMKV storage on iOS and Android

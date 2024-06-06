@@ -7,6 +7,7 @@ import * as Yjs from "yjs";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Text } from "~/components/ui/text";
+import { DocumentInvitation } from "../../components/documentInvitation";
 import { UpdateDocumentNameForm } from "../../components/updateDocumentNameForm";
 import { useLocker } from "../../hooks/useLocker";
 import { useYArray } from "../../hooks/useYArray";
@@ -112,6 +113,8 @@ const List: React.FC<Props> = () => {
         documentId={documentId}
         documentKey={documentKey}
       />
+
+      <DocumentInvitation documentId={documentId} />
 
       <View>
         <View>

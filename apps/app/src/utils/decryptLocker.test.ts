@@ -1,7 +1,6 @@
+import * as sodium from "react-native-libsodium";
 import { decryptLocker } from "./decryptLocker";
 import { encryptLocker } from "./encryptLocker";
-
-import * as sodium from "react-native-libsodium";
 
 beforeAll(async () => {
   await sodium.ready;
