@@ -1,4 +1,3 @@
-import { generateId } from "../utils/generateId/generateId.js";
 import { prisma } from "./prisma.js";
 
 type Params = {
@@ -26,11 +25,6 @@ export const createDocument = async ({
         create: {
           userId,
           isAdmin: true,
-        },
-      },
-      documentInvitations: {
-        create: {
-          token: generateId(16),
         },
       },
     },

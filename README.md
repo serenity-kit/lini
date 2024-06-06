@@ -96,9 +96,7 @@ const seed = generateSeed();
 const (privKey, pubKey) = generateKeyPair(seed);
 const listKeyLockbox = encrypt(pubKey, listKey);
 const invitation = {
-  listId,
   listKeyLockbox,
-  pubKey,
 };
 const encryptedInvitation = encrypt(invitation, sessionKey);
 ```
@@ -115,6 +113,8 @@ const listKey = decrypt(invitation.listKeyLockbox, privKey)
 acceptInvitation(listId, listKey)
 ```
 
+TODO better version where the token is also never exposed to the network so not even the ciphertext can be retrieved by a network attacker
+
 ## Todos
 
 - allow to delete list (needs a tombstone)
@@ -122,6 +122,7 @@ acceptInvitation(listId, listKey)
 - figure out how author keys are managed (tabs in serenity and possible change in secsync)
 - add retry for locker in case write fails (invalid clock)
 - store the list name locally (also with unsynced changes)
+- use expo-secure-store for the sessionKey
 - encrypt MMKV storage on iOS and Android
 
 - allow to sync lists in the background

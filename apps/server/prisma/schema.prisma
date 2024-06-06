@@ -66,6 +66,7 @@ model DocumentInvitation {
   documentId String
   token      String   @unique
   createdAt  DateTime @default(now())
+  ciphertext String
 }
 
 model Document {

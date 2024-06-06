@@ -114,7 +114,7 @@ const List: React.FC<Props> = () => {
         documentKey={documentKey}
       />
 
-      <DocumentInvitation documentId={documentId} />
+      <DocumentInvitation documentId={documentId} documentKey={documentKey} />
 
       <View>
         <View>

@@ -45,6 +45,9 @@ const Lists: React.FC = () => {
 
       <View className="flex flex-col gap-2 pt-4">
         {documentsQuery.data?.map((doc) => {
+          if (!locker.content[`document:${doc.id}`]) {
+            return null;
+          }
           const documentKey = sodium.from_base64(
             locker.content[`document:${doc.id}`]
           );

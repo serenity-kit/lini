@@ -19,12 +19,12 @@ export const acceptInvitation = ({
     sodium.from_base64(nonce),
     sessionKey
   );
+
   const { boxCiphertext } = JSON.parse(sodium.to_string(invitation));
   const listKey = sodium.crypto_box_seal_open(
     sodium.from_base64(boxCiphertext),
     publicKey,
     privateKey
   );
-
   return { listKey };
 };

@@ -1,6 +1,7 @@
 import * as opaque from "@serenity-kit/opaque";
 import { TRPCError } from "@trpc/server";
 import "dotenv/config";
+import sodium from "libsodium-wrappers";
 import { z } from "zod";
 import { addUserToDocument } from "../db/addUserToDocument.js";
 import { createDocument } from "../db/createDocument.js";
@@ -13,6 +14,7 @@ import { deleteLoginAttempt } from "../db/deleteLoginAttempt.js";
 import { deleteSession } from "../db/deleteSession.js";
 import { getDocument } from "../db/getDocument.js";
 import { getDocumentInvitation } from "../db/getDocumentInvitation.js";
+import { getDocumentInvitationByToken } from "../db/getDocumentInvitationByToken.js";
 import { getDocumentMembers } from "../db/getDocumentMembers.js";
 import { getDocumentsByUserId } from "../db/getDocumentsByUserId.js";
 import { getLatestUserLocker } from "../db/getLatestUserLocker.js";
@@ -106,12 +108,22 @@ export const appRouter = router({
     .input(
       z.object({
         documentId: z.string(),
+        ciphertext: z.string(),
+        nonce: z.string(),
       })
     )
     .mutation(async (opts) => {
+      const invitation = sodium.crypto_secretbox_open_easy(
+        sodium.from_base64(opts.input.ciphertext),
+        sodium.from_base64(opts.input.nonce),
+        sodium.from_base64(opts.ctx.session.sessionKey).slice(0, 32)
+      );
+      const { boxCiphertext } = JSON.parse(sodium.to_string(invitation));
+
       const documentInvitation = await createOrRefreshDocumentInvitation({
         userId: opts.ctx.session.userId,
         documentId: opts.input.documentId,
+        ciphertext: boxCiphertext,
       });
       return documentInvitation ? { token: documentInvitation.token } : null;
     }),
@@ -125,6 +137,33 @@ export const appRouter = router({
       });
       if (!documentInvitation) return null;
       return { token: documentInvitation.token };
+    }),
+
+  documentInvitationByToken: protectedProcedure
+    .input(z.string())
+    .query(async (opts) => {
+      const documentInvitation = await getDocumentInvitationByToken({
+        token: opts.input,
+        userId: opts.ctx.session.userId,
+      });
+      if (!documentInvitation) return null;
+
+      const invitation = JSON.stringify({
+        boxCiphertext: documentInvitation.ciphertext,
+      });
+
+      const sessionNonce = sodium.randombytes_buf(
+        sodium.crypto_secretbox_NONCEBYTES
+      );
+      const sessionCiphertext = sodium.crypto_secretbox_easy(
+        invitation,
+        sessionNonce,
+        sodium.from_base64(opts.ctx.session.sessionKey).slice(0, 32)
+      );
+      return {
+        ciphertext: sodium.to_base64(sessionCiphertext),
+        nonce: sodium.to_base64(sessionNonce),
+      };
     }),
 
   acceptDocumentInvitation: protectedProcedure

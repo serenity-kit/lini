@@ -7,6 +7,7 @@ import { AuthForm } from "../components/authForm";
 import { useLocker } from "../hooks/useLocker";
 import { useRegisterAndLogin } from "../hooks/useRegisterAndLogin";
 import { deriveKey } from "../utils/deriveKey";
+import { setSessionKey } from "../utils/sessionKeyStorage";
 
 const Register = () => {
   const { registerAndLogin, isPending } = useRegisterAndLogin();
@@ -31,6 +32,7 @@ const Register = () => {
             key: result.exportKey,
             subkeyId: "1D4xb6ADE6j67ZttH7cj7Q",
           });
+          setSessionKey(result.sessionKey);
           await addItem({ type: "lockerKey", value: lockerKey.key });
 
           if (redirect) {
