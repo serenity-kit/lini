@@ -85,13 +85,47 @@ SELECT * FROM "Document";
 
 Users use OPAQUE to authenticate with the server. After Login the server creates a session and stores it as HTTP-Only Cookie. The session is used to authenticate the user for authenticated requests and also to connect to the Websocket.
 
+### Invitation
+
+Users can invite other users to a list via an invitation link.
+
+Creating an invitation link:
+
+```ts
+const seed = generateSeed();
+const (privKey, pubKey) = generateKeyPair(seed);
+const listKeyLockbox = encrypt(pubKey, listKey);
+const invitation = {
+  listKeyLockbox,
+};
+const encryptedInvitation = encrypt(invitation, sessionKey);
+```
+
+InvitationLink: `${token}/#accessKey=${seed}`
+
+Accepting an invitation:
+
+```ts
+const (privKey, pubKey) = generateKeyPair(seed);
+const encryptedInvitation getInvitationByToken(token);
+const invitation = decrypt(encryptedInvitation, sessionKey)
+const listKey = decrypt(invitation.listKeyLockbox, privKey)
+acceptInvitation(listId, listKey)
+```
+
+TODO better version where the token is also never exposed to the network so not even the ciphertext can be retrieved by a network attacker
+
 ## Todos
 
-- store data locally (api in secsync)
-- encrypt list name
-- add invitation scheme
-- allow to delete list
+- allow to delete list (needs a tombstone)
+- invitation links should expire after 2 days
+- UI for invitations links
+
+- figure out how author keys are managed (tabs in serenity and possible change in secsync)
 - add retry for locker in case write fails (invalid clock)
+- store the list name locally (also with unsynced changes)
+- use expo-secure-store for the sessionKey
 - encrypt MMKV storage on iOS and Android
 
+- allow to sync lists in the background
 - fix websocket session auth in secsync

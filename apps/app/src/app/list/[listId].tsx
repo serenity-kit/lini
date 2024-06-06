@@ -7,6 +7,8 @@ import * as Yjs from "yjs";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Text } from "~/components/ui/text";
+import { DocumentInvitation } from "../../components/documentInvitation";
+import { UpdateDocumentNameForm } from "../../components/updateDocumentNameForm";
 import { useLocker } from "../../hooks/useLocker";
 import { useYArray } from "../../hooks/useYArray";
 import { deserialize } from "../../utils/deserialize";
@@ -107,12 +109,22 @@ const List: React.FC<Props> = () => {
 
   return (
     <>
+      <UpdateDocumentNameForm
+        documentId={documentId}
+        documentKey={documentKey}
+      />
+
+      <DocumentInvitation documentId={documentId} documentKey={documentKey} />
+
       <View>
         <View>
           <Input
             placeholder="What needs to be done?"
             onChangeText={(value) => setNewTodoText(value)}
             value={newTodoText}
+            autoCapitalize="none"
+            autoCorrect={false}
+            autoComplete="off"
           />
           <Button
             className="add"

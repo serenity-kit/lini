@@ -4,11 +4,13 @@ import { prisma } from "./prisma.js";
 type Params = {
   userId: string;
   documentId: string;
+  ciphertext: string;
 };
 
 export const createOrRefreshDocumentInvitation = async ({
   userId,
   documentId,
+  ciphertext,
 }: Params) => {
   const document = await prisma.document.findUnique({
     where: {
@@ -30,6 +32,7 @@ export const createOrRefreshDocumentInvitation = async ({
     data: {
       token,
       documentId,
+      ciphertext,
     },
   });
 };

@@ -3,13 +3,23 @@ import { prisma } from "./prisma.js";
 type Params = {
   documentId: string;
   userId: string;
-  name: string;
+  nameCiphertext: string;
+  nameNonce: string;
+  nameCommitment: string;
 };
 
-export const updateDocument = async ({ documentId, userId, name }: Params) => {
+export const updateDocument = async ({
+  documentId,
+  userId,
+  nameCiphertext,
+  nameNonce,
+  nameCommitment,
+}: Params) => {
   const document = await prisma.document.update({
     data: {
-      name,
+      nameCiphertext,
+      nameNonce,
+      nameCommitment,
     },
     where: {
       id: documentId,
