@@ -1,9 +1,10 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { getQueryKey } from "@trpc/react-query";
 import { useEffect, useState } from "react";
-import { View } from "react-native";
+import { Alert, View } from "react-native";
 import { Input } from "~/components/ui/input";
 import { decryptString } from "../utils/decryptString";
+import { documentNameStorage } from "../utils/documentStorage";
 import { encryptString } from "../utils/encryptString";
 import { trpc } from "../utils/trpc";
 
@@ -13,9 +14,13 @@ type Props = {
 };
 
 export const UpdateDocumentNameForm = ({ documentId, documentKey }: Props) => {
-  const [name, setName] = useState("");
+  const [name, setName] = useState(() => {
+    return documentNameStorage.getString(documentId) || "";
+  });
 
-  const getDocumentQuery = trpc.getDocument.useQuery(documentId);
+  const getDocumentQuery = trpc.getDocument.useQuery(documentId, {
+    refetchInterval: 5000,
+  });
   const updateDocumentMutation = trpc.updateDocument.useMutation();
   const queryClient = useQueryClient();
 
@@ -33,16 +38,24 @@ export const UpdateDocumentNameForm = ({ documentId, documentKey }: Props) => {
   }, [getDocumentQuery.data?.nameCiphertext]);
 
   const updateName = async (name: string) => {
+    documentNameStorage.set(documentId, name);
     const { ciphertext, nonce, commitment } = encryptString({
       value: name,
       key: documentKey,
     });
-    updateDocumentMutation.mutate({
-      id: documentId,
-      nameCiphertext: ciphertext,
-      nameNonce: nonce,
-      nameCommitment: commitment,
-    });
+    updateDocumentMutation.mutate(
+      {
+        id: documentId,
+        nameCiphertext: ciphertext,
+        nameNonce: nonce,
+        nameCommitment: commitment,
+      },
+      {
+        onError: () => {
+          Alert.alert("Failed to update the list name on the server.");
+        },
+      }
+    );
     const documentsQueryKey = getQueryKey(trpc.documents, undefined, "query");
     queryClient.invalidateQueries({
       queryKey: [documentsQueryKey],
@@ -52,7 +65,6 @@ export const UpdateDocumentNameForm = ({ documentId, documentKey }: Props) => {
   return (
     <View>
       <Input
-        // required TODO
         className="border border-slate-300 p-2 rounded"
         placeholder="List name"
         autoComplete="off"

@@ -117,15 +117,17 @@ TODO better version where the token is also never exposed to the network so not 
 
 ## Todos
 
-- allow to delete list (needs a tombstone)
+- deploy to production
 - invitation links should expire after 2 days
 - UI for invitations links
 
 - figure out how author keys are managed (tabs in serenity and possible change in secsync)
 - add retry for locker in case write fails (invalid clock)
-- store the list name locally (also with unsynced changes)
 - use expo-secure-store for the sessionKey
 - encrypt MMKV storage on iOS and Android
+
+- allow to delete list (needs a tombstone and properly cleanup local stores)
+- allow to create lists locally
 
 - allow to sync lists in the background
 - fix websocket session auth in secsync

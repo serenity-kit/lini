@@ -8,6 +8,7 @@ import { CreateListForm } from "../components/createListForm";
 import { Logout } from "../components/logout";
 import { useLocker } from "../hooks/useLocker";
 import { decryptString } from "../utils/decryptString";
+import { documentNameStorage } from "../utils/documentStorage";
 import { trpc } from "../utils/trpc";
 
 const Lists: React.FC = () => {
@@ -27,6 +28,12 @@ const Lists: React.FC = () => {
   const documentsQuery = trpc.documents.useQuery(undefined, {
     refetchInterval: 5000,
   });
+  let keys = documentNameStorage.getAllKeys();
+  if (documentsQuery.data) {
+    const remoteDocumentIds = documentsQuery.data.map((doc) => doc.id);
+    // merge remote and local keys and deduplicate them
+    keys = Array.from(new Set([...keys, ...remoteDocumentIds]));
+  }
 
   return (
     <View>
@@ -44,23 +51,25 @@ const Lists: React.FC = () => {
       <CreateListForm />
 
       <View className="flex flex-col gap-2 pt-4">
-        {documentsQuery.data?.map((doc) => {
-          if (!locker.content[`document:${doc.id}`]) {
+        {keys.map((docId) => {
+          if (!locker.content[`document:${docId}`]) {
             return null;
           }
           const documentKey = sodium.from_base64(
-            locker.content[`document:${doc.id}`]
+            locker.content[`document:${docId}`]
           );
-
-          const name = decryptString({
-            ciphertext: doc.nameCiphertext,
-            commitment: doc.nameCommitment,
-            nonce: doc.nameNonce,
-            key: documentKey,
-          });
+          const doc = documentsQuery.data?.find((doc) => doc.id === docId);
+          const name = doc
+            ? decryptString({
+                ciphertext: doc.nameCiphertext,
+                commitment: doc.nameCommitment,
+                nonce: doc.nameNonce,
+                key: documentKey,
+              })
+            : documentNameStorage.getString(docId);
 
           return (
-            <Link href={`/list/${doc.id}`} key={doc.id} asChild>
+            <Link href={`/list/${docId}`} key={docId} asChild>
               <Card className="flex flex-col items-start gap-2 rounded-lg border p-5 text-left text-xl transition-all hover:bg-accent">
                 <Text>{name}</Text>
               </Card>

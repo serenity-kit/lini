@@ -7,6 +7,7 @@ import { generateId } from "secsync";
 import { Button } from "~/components/ui/button";
 import { Text } from "~/components/ui/text";
 import { useLocker } from "../hooks/useLocker";
+import { documentNameStorage } from "../utils/documentStorage";
 import { encryptString } from "../utils/encryptString";
 import { trpc } from "../utils/trpc";
 
@@ -57,6 +58,7 @@ export const CreateListForm: React.FC = () => {
                   documentId: document.id,
                   value: sodium.to_base64(key),
                 });
+                documentNameStorage.set(document.id, "");
 
                 router.navigate({
                   pathname: `/list/[documentId]`,
