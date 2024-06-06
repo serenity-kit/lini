@@ -35,6 +35,7 @@ import {
   publicProcedure,
   router,
 } from "../utils/trpc/trpc.js";
+import { twoDaysAgo } from "../utils/twoDaysAgo.js";
 
 export const appRouter = router({
   me: protectedProcedure.query(async (opts) => {
@@ -125,7 +126,12 @@ export const appRouter = router({
         documentId: opts.input.documentId,
         ciphertext: boxCiphertext,
       });
-      return documentInvitation ? { token: documentInvitation.token } : null;
+      return documentInvitation
+        ? {
+            token: documentInvitation.token,
+            isExpired: documentInvitation.createdAt < twoDaysAgo(),
+          }
+        : null;
     }),
 
   documentInvitation: protectedProcedure
@@ -136,7 +142,10 @@ export const appRouter = router({
         userId: opts.ctx.session.userId,
       });
       if (!documentInvitation) return null;
-      return { token: documentInvitation.token };
+      return {
+        token: documentInvitation.token,
+        isExpired: documentInvitation.createdAt < twoDaysAgo(),
+      };
     }),
 
   documentInvitationByToken: protectedProcedure
