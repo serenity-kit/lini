@@ -1,3 +1,5 @@
+import { useQueryClient } from "@tanstack/react-query";
+import { getQueryKey } from "@trpc/react-query";
 import { router } from "expo-router";
 import { Alert, View } from "react-native";
 import * as sodium from "react-native-libsodium";
@@ -12,6 +14,7 @@ export const CreateListForm: React.FC = () => {
   // const [name, setName] = useState("");
   const createDocumentMutation = trpc.createDocument.useMutation();
   const { addItem } = useLocker();
+  const queryClient = useQueryClient();
 
   return (
     <View className="flex justify-center items-center gap-4 py-4">
@@ -19,6 +22,7 @@ export const CreateListForm: React.FC = () => {
         placeholder="List name"
         className="max-w-48"
         value={name}
+        autoCorrect={false}
         onChangeText={(value) => {
           setName(value);
         }}
@@ -58,7 +62,14 @@ export const CreateListForm: React.FC = () => {
                   pathname: `/list/[documentId]`,
                   params: { documentId: document.id },
                 });
-                // documentsQuery.refetch(); // TODO
+                const documentsQueryKey = getQueryKey(
+                  trpc.documents,
+                  undefined,
+                  "query"
+                );
+                queryClient.invalidateQueries({
+                  queryKey: [documentsQueryKey],
+                });
               },
               onError: () => {
                 Alert.alert("Failed to create the list");

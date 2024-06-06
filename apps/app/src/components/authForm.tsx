@@ -26,6 +26,8 @@ export const AuthForm = ({ onSubmit, isPending, children }: Props) => {
           className="border border-slate-300 p-2 rounded"
           placeholder="Username"
           autoComplete="off"
+          autoCorrect={false}
+          autoCapitalize="none"
           value={username}
           onChangeText={(value) => {
             setUsername(value);
@@ -37,6 +39,8 @@ export const AuthForm = ({ onSubmit, isPending, children }: Props) => {
           className="border border-slate-300 p-2 rounded"
           placeholder="Password"
           autoComplete="off"
+          autoCorrect={false}
+          autoCapitalize="none"
           value={password}
           onChangeText={(value) => {
             setPassword(value);

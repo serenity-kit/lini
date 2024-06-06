@@ -87,10 +87,8 @@ Users use OPAQUE to authenticate with the server. After Login the server creates
 
 ## Todos
 
-- invalidate documentsQuery properly
-
 - add invitation scheme
-- allow to delete list
+- allow to delete list (needs a tombstone)
 
 - add retry for locker in case write fails (invalid clock)
 - store the list name locally (also with unsynced changes)

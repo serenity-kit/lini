@@ -119,6 +119,9 @@ const List: React.FC<Props> = () => {
             placeholder="What needs to be done?"
             onChangeText={(value) => setNewTodoText(value)}
             value={newTodoText}
+            autoCapitalize="none"
+            autoCorrect={false}
+            autoComplete="off"
           />
           <Button
             className="add"

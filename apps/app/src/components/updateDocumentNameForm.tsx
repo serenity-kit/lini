@@ -1,3 +1,5 @@
+import { useQueryClient } from "@tanstack/react-query";
+import { getQueryKey } from "@trpc/react-query";
 import { useEffect, useState } from "react";
 import { View } from "react-native";
 import { Input } from "~/components/ui/input";
@@ -15,6 +17,7 @@ export const UpdateDocumentNameForm = ({ documentId, documentKey }: Props) => {
 
   const getDocumentQuery = trpc.getDocument.useQuery(documentId);
   const updateDocumentMutation = trpc.updateDocument.useMutation();
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (getDocumentQuery.data) {
@@ -40,6 +43,10 @@ export const UpdateDocumentNameForm = ({ documentId, documentKey }: Props) => {
       nameNonce: nonce,
       nameCommitment: commitment,
     });
+    const documentsQueryKey = getQueryKey(trpc.documents, undefined, "query");
+    queryClient.invalidateQueries({
+      queryKey: [documentsQueryKey],
+    });
   };
 
   return (
@@ -49,6 +56,8 @@ export const UpdateDocumentNameForm = ({ documentId, documentKey }: Props) => {
         className="border border-slate-300 p-2 rounded"
         placeholder="List name"
         autoComplete="off"
+        autoCorrect={false}
+        autoCapitalize="none"
         value={name}
         onChangeText={(value) => {
           setName(value);
