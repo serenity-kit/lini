@@ -42,7 +42,12 @@ export const appRouter = router({
   }),
   documents: protectedProcedure.query(async (opts) => {
     const documents = await getDocumentsByUserId(opts.ctx.session.userId);
-    return documents.map((doc) => ({ id: doc.id, name: doc.name }));
+    return documents.map((doc) => ({
+      id: doc.id,
+      nameCiphertext: doc.nameCiphertext,
+      nameNonce: doc.nameNonce,
+      nameCommitment: doc.nameCommitment,
+    }));
   }),
   getDocument: protectedProcedure.input(z.string()).query(async (opts) => {
     const document = await getDocument({
@@ -52,7 +57,9 @@ export const appRouter = router({
     if (!document) return null;
     return {
       id: document.id,
-      name: document.name,
+      nameCiphertext: document.nameCiphertext,
+      nameNonce: document.nameNonce,
+      nameCommitment: document.nameCommitment,
       isAdmin: document.users.length > 0 ? document.users[0].isAdmin : false,
     };
   }),
@@ -60,31 +67,39 @@ export const appRouter = router({
     .input(
       z.object({
         id: z.string(),
-        name: z.string(),
+        nameCiphertext: z.string(),
+        nameNonce: z.string(),
+        nameCommitment: z.string(),
       })
     )
     .mutation(async (opts) => {
       const updatedDocument = await updateDocument({
         documentId: opts.input.id,
         userId: opts.ctx.session.userId,
-        name: opts.input.name,
+        nameCiphertext: opts.input.nameCiphertext,
+        nameNonce: opts.input.nameNonce,
+        nameCommitment: opts.input.nameCommitment,
       });
-      return { id: updatedDocument.id, name: updatedDocument.name };
+      return { id: updatedDocument.id };
     }),
   createDocument: protectedProcedure
     .input(
       z.object({
-        name: z.string(),
+        id: z.string(),
+        nameCiphertext: z.string(),
+        nameNonce: z.string(),
+        nameCommitment: z.string(),
       })
     )
     .mutation(async (opts) => {
-      const documentId = generateId();
       const document = await createDocument({
         userId: opts.ctx.session.userId,
-        documentId,
-        name: opts.input.name,
+        documentId: opts.input.id,
+        nameCiphertext: opts.input.nameCiphertext,
+        nameNonce: opts.input.nameNonce,
+        nameCommitment: opts.input.nameCommitment,
       });
-      return { document: { id: document.id, name: document.name } };
+      return { document: { id: document.id } };
     }),
 
   createOrRefreshDocumentInvitation: protectedProcedure

@@ -87,11 +87,14 @@ Users use OPAQUE to authenticate with the server. After Login the server creates
 
 ## Todos
 
-- store data locally (api in secsync)
-- encrypt list name
+- invalidate documentsQuery properly
+
 - add invitation scheme
 - allow to delete list
+
 - add retry for locker in case write fails (invalid clock)
+- store the list name locally (also with unsynced changes)
 - encrypt MMKV storage on iOS and Android
 
+- allow to sync lists in the background
 - fix websocket session auth in secsync

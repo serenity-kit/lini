@@ -1,10 +1,13 @@
 import { Link } from "expo-router";
 import * as React from "react";
 import { View } from "react-native";
+import sodium from "react-native-libsodium";
 import { Card } from "~/components/ui/card";
 import { Text } from "~/components/ui/text";
 import { CreateListForm } from "../components/createListForm";
 import { Logout } from "../components/logout";
+import { useLocker } from "../hooks/useLocker";
+import { decryptString } from "../utils/decryptString";
 import { trpc } from "../utils/trpc";
 
 const Lists: React.FC = () => {
@@ -18,6 +21,8 @@ const Lists: React.FC = () => {
       return true;
     },
   });
+
+  const locker = useLocker();
 
   const documentsQuery = trpc.documents.useQuery(undefined, {
     refetchInterval: 5000,
@@ -39,13 +44,26 @@ const Lists: React.FC = () => {
       <CreateListForm />
 
       <View className="flex flex-col gap-2 pt-4">
-        {documentsQuery.data?.map((doc) => (
-          <Link href={`/list/${doc.id}`} key={doc.id} asChild>
-            <Card className="flex flex-col items-start gap-2 rounded-lg border p-5 text-left text-xl transition-all hover:bg-accent">
-              <Text>{doc.name}</Text>
-            </Card>
-          </Link>
-        ))}
+        {documentsQuery.data?.map((doc) => {
+          const documentKey = sodium.from_base64(
+            locker.content[`document:${doc.id}`]
+          );
+
+          const name = decryptString({
+            ciphertext: doc.nameCiphertext,
+            commitment: doc.nameCommitment,
+            nonce: doc.nameNonce,
+            key: documentKey,
+          });
+
+          return (
+            <Link href={`/list/${doc.id}`} key={doc.id} asChild>
+              <Card className="flex flex-col items-start gap-2 rounded-lg border p-5 text-left text-xl transition-all hover:bg-accent">
+                <Text>{name}</Text>
+              </Card>
+            </Link>
+          );
+        })}
       </View>
     </View>
   );

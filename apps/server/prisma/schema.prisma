@@ -70,7 +70,9 @@ model DocumentInvitation {
 
 model Document {
   id                  String               @id
-  name                String
+  nameCiphertext      String
+  nameNonce           String
+  nameCommitment      String
   createdAt           DateTime             @default(now())
   updatedAt           DateTime             @updatedAt
   users               UsersOnDocuments[]
