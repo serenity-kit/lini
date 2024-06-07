@@ -1,5 +1,5 @@
 import React, { useId } from "react";
-import { Alert } from "react-native";
+import { Alert, View } from "react-native";
 import * as sodium from "react-native-libsodium";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
@@ -55,34 +55,32 @@ export const DocumentInvitation: React.FC<Props> = ({
   }
 
   return (
-    <div>
-      <div className="flex gap-2 pt-2">
-        {documentInvitationQuery.data ? (
-          <Text>
-            You have one invitation link ({documentInvitationQuery.data.token})
-            which is {documentInvitationQuery.data.isExpired ? "" : "not "}
-            expired.
-          </Text>
-        ) : (
-          <Text>No invitation link found</Text>
-        )}
+    <View className="flex gap-2 pt-2 px-6">
+      {documentInvitationQuery.data ? (
+        <Text>
+          You have one invitation link ({documentInvitationQuery.data.token})
+          which is {documentInvitationQuery.data.isExpired ? "" : "not "}
+          expired.
+        </Text>
+      ) : (
+        <Text>No invitation link found</Text>
+      )}
 
-        <Button
-          disabled={createOrRefreshDocumentInvitationMutation.isPending}
-          onPress={createAndSendInvitation}
-        >
-          <Text>Create a new Invitation Link</Text>
-        </Button>
-        {seed && (
-          <Input
-            id={id}
-            value={`${window.location.origin}/list-invitation/${documentInvitationQuery.data?.token}#key=${seed}`}
-            readOnly
-            className="w-72 h-40"
-            multiline
-          />
-        )}
-      </div>
-    </div>
+      <Button
+        disabled={createOrRefreshDocumentInvitationMutation.isPending}
+        onPress={createAndSendInvitation}
+      >
+        <Text>Create a new Invitation Link</Text>
+      </Button>
+      {seed && (
+        <Input
+          id={id}
+          value={`${window.location.origin}/list-invitation/${documentInvitationQuery.data?.token}#key=${seed}`}
+          readOnly
+          className="w-72 h-40"
+          multiline
+        />
+      )}
+    </View>
   );
 };

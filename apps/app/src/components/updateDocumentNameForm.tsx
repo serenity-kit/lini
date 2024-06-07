@@ -2,11 +2,11 @@ import { useQueryClient } from "@tanstack/react-query";
 import { getQueryKey } from "@trpc/react-query";
 import { useEffect, useState } from "react";
 import { Alert, View } from "react-native";
-import { Input } from "~/components/ui/input";
 import { decryptString } from "../utils/decryptString";
 import { documentNameStorage } from "../utils/documentStorage";
 import { encryptString } from "../utils/encryptString";
 import { trpc } from "../utils/trpc";
+import { SubtleInput } from "./subtleInput";
 
 type Props = {
   documentId: string;
@@ -63,9 +63,8 @@ export const UpdateDocumentNameForm = ({ documentId, documentKey }: Props) => {
   };
 
   return (
-    <View>
-      <Input
-        className="border border-slate-300 p-2 rounded"
+    <View className="px-4">
+      <SubtleInput
         placeholder="List name"
         autoComplete="off"
         autoCorrect={false}

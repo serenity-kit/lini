@@ -5,9 +5,12 @@ import sodium, { KeyPair } from "react-native-libsodium";
 import { useYjsSync } from "secsync-react-yjs";
 import * as Yjs from "yjs";
 import { Button } from "~/components/ui/button";
+import { Checkbox } from "~/components/ui/checkbox";
 import { Input } from "~/components/ui/input";
 import { Text } from "~/components/ui/text";
+import { X } from "~/lib/icons/X";
 import { DocumentInvitation } from "../../components/documentInvitation";
+import { SubtleInput } from "../../components/subtleInput";
 import { UpdateDocumentNameForm } from "../../components/updateDocumentNameForm";
 import { useLocker } from "../../hooks/useLocker";
 import { useYArray } from "../../hooks/useYArray";
@@ -108,57 +111,61 @@ const List: React.FC<Props> = () => {
   });
 
   return (
-    <>
+    <View className="py-4 gap-4">
+      <DocumentInvitation documentId={documentId} documentKey={documentKey} />
+
       <UpdateDocumentNameForm
         documentId={documentId}
         documentKey={documentKey}
       />
 
-      <DocumentInvitation documentId={documentId} documentKey={documentKey} />
-
-      <View>
-        <View>
-          <Input
-            placeholder="What needs to be done?"
-            onChangeText={(value) => setNewTodoText(value)}
-            value={newTodoText}
-            autoCapitalize="none"
-            autoCorrect={false}
-            autoComplete="off"
-          />
-          <Button
-            className="add"
-            onPress={(event) => {
-              event.preventDefault();
-              yTodos.push([newTodoText]);
-              setNewTodoText("");
-            }}
-          >
-            <Text>Add</Text>
-          </Button>
-        </View>
-
-        <View>
-          {todos.map((entry, index) => {
-            return (
-              <View key={`${index}-${entry}`}>
-                <View className="edit">
-                  <Text>{entry}</Text>
-                </View>
-                <Button
-                  className="destroy"
-                  onPress={() => {
-                    yTodos.delete(index, 1);
-                  }}
-                >
-                  <Text>x</Text>
-                </Button>
-              </View>
-            );
-          })}
-        </View>
+      <View className="flex flex-row items-center gap-2 px-6">
+        <Input
+          placeholder="What needs to be done?"
+          onChangeText={(value) => setNewTodoText(value)}
+          value={newTodoText}
+          autoCapitalize="none"
+          autoCorrect={false}
+          autoComplete="off"
+        />
+        <Button
+          className="add"
+          onPress={(event) => {
+            event.preventDefault();
+            yTodos.push([newTodoText]);
+            setNewTodoText("");
+          }}
+        >
+          <Text>Add</Text>
+        </Button>
       </View>
-    </>
+
+      {todos.map((entry, index) => {
+        return (
+          <View
+            key={`${index}-${entry}`}
+            className="flex flex-row items-center gap-2 px-6"
+          >
+            <Checkbox
+              checked
+              onCheckedChange={() => {
+                console.log("checked", index);
+              }}
+            />
+            <SubtleInput value={entry} />
+            <Button
+              variant="ghost"
+              size="icon"
+              onPress={() => {
+                yTodos.delete(index, 1);
+              }}
+            >
+              <X width={14} height={14} />
+            </Button>
+          </View>
+        );
+      })}
+    </View>
   );
 };
 

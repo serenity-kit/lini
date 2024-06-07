@@ -122,7 +122,7 @@ TODO better version where the token is also never exposed to the network so not 
 - todo list UI & structure
 - nav UI structure
 - logo and colors
-- deploy to production
+- deploy to production (before move the repo)
 
 - figure out how author keys are managed (tabs in serenity and possible change in secsync)
 - add retry for locker in case write fails (invalid clock)
