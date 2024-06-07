@@ -117,15 +117,9 @@ TODO better version where the token is also never exposed to the network so not 
 
 ## Todos
 
-- styling
-
-  - implement todos properly in yjs
-  - fix font-size for inputs
-  - fix icons and font-size on ios
-  - fix input active for iOS
-  - fix iOS of add item
-  - show members and invitation link as menu
-  - proper login/signup redirect
+- implement todos properly in yjs
+- show members and invitation link as menu
+- proper login/signup redirect
 
 - use expo-secure-store for the sessionKey
 - encrypt MMKV storage on iOS and Android

@@ -172,7 +172,7 @@ const List: React.FC<Props> = () => {
                 yTodos.delete(index, 1);
               }}
             >
-              <X width={14} height={14} />
+              <X width={14} height={14} className="text-red-700" />
             </Button>
           </View>
         );

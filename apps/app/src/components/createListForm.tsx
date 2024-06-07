@@ -69,7 +69,7 @@ export const CreateListForm: React.FC = () => {
         );
       }}
     >
-      <Text>Create new List</Text>
+      <Text>Create List</Text>
     </Button>
   );
 };

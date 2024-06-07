@@ -1,12 +1,16 @@
+import { DrawerActions } from "@react-navigation/native";
+import { useNavigation } from "expo-router";
 import { Drawer } from "expo-router/drawer";
-import { useWindowDimensions } from "react-native";
+import { Pressable, useWindowDimensions } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { PanelLeft } from "~/lib/icons/PanelLeft";
 import { DrawerContent } from "../../components/drawerContent";
 import { useIsPermanentLeftDrawer } from "../../hooks/useIsPermanentDrawer";
 
 export default function Layout() {
   const isPermanentLeftDrawer = useIsPermanentLeftDrawer();
   const { width: fullWidth } = useWindowDimensions();
+  const navigation = useNavigation();
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -20,9 +24,20 @@ export default function Layout() {
           overlayColor: "transparent",
           drawerPosition: "left",
           headerShown: isPermanentLeftDrawer ? false : true,
-          // headerLeft: () => {
-          //   return <PanelLeft />;
-          // },
+          headerLeft: () => {
+            const navigation = useNavigation();
+
+            return (
+              <Pressable
+                className="p-6"
+                onPress={() =>
+                  navigation.dispatch(DrawerActions.toggleDrawer())
+                }
+              >
+                <PanelLeft className="text-black" />
+              </Pressable>
+            );
+          },
           headerTitle: () => null,
           // drawerStyle: {
           //   width: 240,

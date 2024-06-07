@@ -79,17 +79,15 @@ export const DrawerContent: React.FC = () => {
               : documentNameStorage.getString(docId);
 
             return (
-              <Link
-                href={`/list/${docId}`}
-                key={docId}
-                className="flex flex-row items-center gap-2 rounded-lg transition-all hover:bg-accent p-2"
-              >
-                <Text className="block w-4">
-                  <ListTodo width={16} height={16} />
-                </Text>
-                <Text className="text-xl" numberOfLines={1}>
-                  {name || "Untitled"}
-                </Text>
+              <Link href={`/list/${docId}`} key={docId} asChild>
+                <View className="flex flex-row items-center gap-2 rounded-lg transition-all hover:bg-accent p-2">
+                  <View className="w-4">
+                    <ListTodo width={16} height={16} className="text-black" />
+                  </View>
+                  <Text className="text-xl" numberOfLines={1}>
+                    {name || "Untitled"}
+                  </Text>
+                </View>
               </Link>
             );
           })}
