@@ -6,18 +6,13 @@ import {
   QueryClientProvider,
 } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
-import { SplashScreen } from "expo-router";
-import { Drawer } from "expo-router/drawer";
+import { Slot, SplashScreen } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
-import { useWindowDimensions } from "react-native";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { NAV_THEME } from "~/lib/constants";
 import { useColorScheme } from "~/lib/useColorScheme";
-import { DrawerContent } from "../components/drawerContent";
 import "../global.css";
-import { useIsPermanentLeftDrawer } from "../hooks/useIsPermanentDrawer";
 import useLoadingLibsodium from "../hooks/useLoadingLibsodium";
 import { trpc } from "../utils/trpc";
 
@@ -103,11 +98,6 @@ export default function Layout() {
     })
   );
 
-  const isPermanentLeftDrawer = useIsPermanentLeftDrawer();
-  const { width: fullWidth } = useWindowDimensions();
-
-  console.log(isPermanentLeftDrawer);
-
   if (!isLoadingComplete) {
     return null;
   }
@@ -118,37 +108,8 @@ export default function Layout() {
         <SafeAreaProvider>
           <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
             <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
-            {/* <Stack>
-              <Stack.Screen
-                name="index"
-                options={{
-                  // Hide the header for all other routes.
-                  title: "Lists",
-                }}
-              />
-            </Stack> */}
 
-            <GestureHandlerRootView style={{ flex: 1 }}>
-              <Drawer
-                drawerContent={DrawerContent}
-                screenOptions={{
-                  drawerType: isPermanentLeftDrawer ? "permanent" : "front",
-                  drawerStyle: {
-                    width: isPermanentLeftDrawer ? 240 : fullWidth,
-                  },
-                  overlayColor: "transparent",
-                  drawerPosition: "left",
-                  headerShown: isPermanentLeftDrawer ? false : true,
-                  // headerLeft: () => {
-                  //   return <PanelLeft />;
-                  // },
-                  headerTitle: () => null,
-                  // drawerStyle: {
-                  //   width: 240,
-                  // },
-                }}
-              />
-            </GestureHandlerRootView>
+            <Slot />
 
             {/* Default Portal Host (one per app) */}
             {/* <PortalHost /> */}

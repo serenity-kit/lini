@@ -16,7 +16,7 @@ export const AuthForm = ({ onSubmit, isPending, children }: Props) => {
 
   return (
     <View>
-      <Text className="text-xl text-center font-semibold mb-8 mt-12">
+      <Text className="text-3xl text-center font-semibold mb-8 mt-12">
         {children}
       </Text>
 
@@ -53,7 +53,7 @@ export const AuthForm = ({ onSubmit, isPending, children }: Props) => {
             onSubmit({ username, password });
           }}
         >
-          {children}
+          <Text>{children}</Text>
         </Button>
       </View>
     </View>

@@ -1,4 +1,4 @@
-import { router, useLocalSearchParams } from "expo-router";
+import { Link, router, useLocalSearchParams } from "expo-router";
 import { useState } from "react";
 import { View } from "react-native";
 import { Text } from "~/components/ui/text";
@@ -16,7 +16,7 @@ const Login = () => {
   const { addItem } = useLocker();
 
   return (
-    <View className="max-w-md mr-auto ml-auto">
+    <View className="max-w-md mr-auto ml-auto min-w-80 mt-32">
       <AuthForm
         onSubmit={async ({ password, username }) => {
           const loginResult = await login({
@@ -41,7 +41,7 @@ const Login = () => {
           }
           router.navigate("/");
         }}
-        children={<Text>Login</Text>}
+        children="Login"
         isPending={isPending}
       />
 
@@ -53,6 +53,12 @@ const Login = () => {
           <Text>Failed to log in</Text>
         </View>
       )}
+
+      <View className="mt-8 text-center">
+        <Link href="/register" className="text-center">
+          Sign up here
+        </Link>
+      </View>
     </View>
   );
 };

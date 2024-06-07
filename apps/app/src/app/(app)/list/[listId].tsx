@@ -9,17 +9,17 @@ import { Checkbox } from "~/components/ui/checkbox";
 import { Input } from "~/components/ui/input";
 import { Text } from "~/components/ui/text";
 import { X } from "~/lib/icons/X";
-import { DocumentInvitation } from "../../components/documentInvitation";
-import { SubtleInput } from "../../components/subtleInput";
-import { UpdateDocumentNameForm } from "../../components/updateDocumentNameForm";
-import { useLocker } from "../../hooks/useLocker";
-import { useYArray } from "../../hooks/useYArray";
-import { deserialize } from "../../utils/deserialize";
+import { DocumentInvitation } from "../../../components/documentInvitation";
+import { SubtleInput } from "../../../components/subtleInput";
+import { UpdateDocumentNameForm } from "../../../components/updateDocumentNameForm";
+import { useLocker } from "../../../hooks/useLocker";
+import { useYArray } from "../../../hooks/useYArray";
+import { deserialize } from "../../../utils/deserialize";
 import {
   documentPendingChangesStorage,
   documentStorage,
-} from "../../utils/documentStorage";
-import { serialize } from "../../utils/serialize";
+} from "../../../utils/documentStorage";
+import { serialize } from "../../../utils/serialize";
 
 const websocketEndpoint =
   process.env.NODE_ENV === "development"
@@ -120,15 +120,17 @@ const List: React.FC<Props> = () => {
       />
 
       <View className="flex flex-row items-center gap-2 px-6">
-        <Input
-          placeholder="What needs to be done?"
-          onChangeText={(value) => setNewTodoText(value)}
-          value={newTodoText}
-          autoCapitalize="none"
-          autoCorrect={false}
-          autoComplete="off"
-          numberOfLines={1}
-        />
+        <View className="flex flex-1">
+          <Input
+            placeholder="What needs to be done?"
+            onChangeText={(value) => setNewTodoText(value)}
+            value={newTodoText}
+            autoCapitalize="none"
+            autoCorrect={false}
+            autoComplete="off"
+            numberOfLines={1}
+          />
+        </View>
         <Button
           className="add"
           onPress={(event) => {
@@ -153,7 +155,16 @@ const List: React.FC<Props> = () => {
                 console.log("checked", index);
               }}
             />
-            <SubtleInput value={entry} />
+            <View className="flex flex-1">
+              <SubtleInput
+                placeholder="What needs to be done?"
+                value={entry}
+                numberOfLines={1}
+                autoCapitalize="none"
+                autoCorrect={false}
+                autoComplete="off"
+              />
+            </View>
             <Button
               variant="ghost"
               size="icon"

@@ -49,12 +49,7 @@ export const DrawerContent: React.FC = () => {
       }}
     >
       <View className="gap-4">
-        <Link href="/login">
-          <Text>Login</Text>
-        </Link>
-        <Link href="/register">Register</Link>
-
-        <View className="flex flex-row px-4 items-center gap-2">
+        <View className="flex flex-row px-4 items-center gap-2 pt-4">
           <View className="bg-slate-200 w-10 h-10 rounded-full items-center justify-center">
             <Text>{meQuery.data?.username.substring(0, 2)}</Text>
           </View>
@@ -93,7 +88,7 @@ export const DrawerContent: React.FC = () => {
                   <ListTodo width={16} height={16} />
                 </Text>
                 <Text className="text-xl" numberOfLines={1}>
-                  {name}
+                  {name || "Untitled"}
                 </Text>
               </Link>
             );

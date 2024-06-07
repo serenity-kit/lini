@@ -125,7 +125,7 @@ TODO better version where the token is also never exposed to the network so not 
   - fix input active for iOS
   - fix iOS of add item
   - show members and invitation link as menu
-  - split nav into login/register and authed part
+  - proper login/signup redirect
 
 - use expo-secure-store for the sessionKey
 - encrypt MMKV storage on iOS and Android
