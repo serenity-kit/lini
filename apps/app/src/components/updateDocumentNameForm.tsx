@@ -65,7 +65,8 @@ export const UpdateDocumentNameForm = ({ documentId, documentKey }: Props) => {
   return (
     <View className="px-4">
       <SubtleInput
-        placeholder="List name"
+        className="text-2xl font-medium"
+        placeholder="enter the list name here …"
         autoComplete="off"
         autoCorrect={false}
         autoCapitalize="none"
