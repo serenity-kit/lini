@@ -127,6 +127,7 @@ const List: React.FC<Props> = () => {
           autoCapitalize="none"
           autoCorrect={false}
           autoComplete="off"
+          numberOfLines={1}
         />
         <Button
           className="add"

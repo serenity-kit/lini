@@ -3,6 +3,7 @@ import { ListTodo } from "lucide-react-native";
 import * as React from "react";
 import { View } from "react-native";
 import sodium from "react-native-libsodium";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Text } from "~/components/ui/text";
 import { CreateListForm } from "../components/createListForm";
 import { Logout } from "../components/logout";
@@ -35,23 +36,36 @@ export const DrawerContent: React.FC = () => {
     keys = Array.from(new Set([...keys, ...remoteDocumentIds]));
   }
 
+  const insets = useSafeAreaInsets();
+
   return (
-    <View className="flex flex-1 flex-col justify-between">
-      <View>
+    <View
+      className="flex flex-1 flex-col justify-between"
+      style={{
+        paddingTop: insets.top,
+        paddingBottom: insets.bottom,
+        paddingLeft: insets.left,
+        paddingRight: insets.right,
+      }}
+    >
+      <View className="gap-4">
         <Link href="/login">
           <Text>Login</Text>
         </Link>
         <Link href="/register">Register</Link>
 
-        <View>
+        <View className="flex flex-row px-4 items-center gap-2">
+          <View className="bg-slate-200 w-10 h-10 rounded-full items-center justify-center">
+            <Text>{meQuery.data?.username.substring(0, 2)}</Text>
+          </View>
           <Text>{meQuery.data?.username}</Text>
         </View>
 
-        <View className="p-4">
+        <View className="px-4">
           <CreateListForm />
         </View>
 
-        <View className="flex flex-col p-2">
+        <View className="flex flex-col px-2">
           {keys.map((docId) => {
             if (!locker.content[`document:${docId}`]) {
               return null;

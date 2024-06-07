@@ -132,15 +132,17 @@ export default function Layout() {
               <Drawer
                 drawerContent={DrawerContent}
                 screenOptions={{
-                  // headerShown: false,
                   drawerType: isPermanentLeftDrawer ? "permanent" : "front",
-                  // drawerType: "permanent",
                   drawerStyle: {
                     width: isPermanentLeftDrawer ? 240 : fullWidth,
                   },
                   overlayColor: "transparent",
-
                   drawerPosition: "left",
+                  headerShown: isPermanentLeftDrawer ? false : true,
+                  // headerLeft: () => {
+                  //   return <PanelLeft />;
+                  // },
+                  headerTitle: () => null,
                   // drawerStyle: {
                   //   width: 240,
                   // },
