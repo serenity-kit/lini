@@ -118,8 +118,9 @@ TODO better version where the token is also never exposed to the network so not 
 ## Todos
 
 - implement todos properly in yjs
-- show members and invitation link as menu
+- show members and invitation link as menu (popup broken)
 - proper login/signup redirect
+- on enter submit the add form (also every input)
 
 - use expo-secure-store for the sessionKey
 - encrypt MMKV storage on iOS and Android

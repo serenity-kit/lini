@@ -55,7 +55,7 @@ export const DocumentInvitation: React.FC<Props> = ({
   }
 
   return (
-    <View className="flex flex-col gap-2 pt-2 px-6">
+    <View className="flex flex-col gap-2">
       {documentInvitationQuery.data ? (
         <Text>
           You have one invitation link ({documentInvitationQuery.data.token})
@@ -78,6 +78,7 @@ export const DocumentInvitation: React.FC<Props> = ({
           value={`${window.location.origin}/list-invitation/${documentInvitationQuery.data?.token}#key=${seed}`}
           readOnly
           multiline
+          className="min-h-32"
         />
       )}
     </View>

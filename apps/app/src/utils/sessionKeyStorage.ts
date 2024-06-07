@@ -1,7 +1,7 @@
 import { MMKV } from "react-native-mmkv";
 // TODO replace with secure storage!!!
 
-const sessionKeyStorage = new MMKV({
+export const sessionKeyStorage = new MMKV({
   id: `session-key-storage`,
 });
 

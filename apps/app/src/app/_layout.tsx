@@ -10,6 +10,7 @@ import { Slot, SplashScreen } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { PortalHost } from "~/components/primitives/portal";
 import { NAV_THEME } from "~/lib/constants";
 import { useColorScheme } from "~/lib/useColorScheme";
 import "../global.css";
@@ -112,7 +113,7 @@ export default function Layout() {
             <Slot />
 
             {/* Default Portal Host (one per app) */}
-            {/* <PortalHost /> */}
+            <PortalHost />
           </ThemeProvider>
         </SafeAreaProvider>
       </QueryClientProvider>

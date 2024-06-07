@@ -63,7 +63,7 @@ export const UpdateDocumentNameForm = ({ documentId, documentKey }: Props) => {
   };
 
   return (
-    <View className="px-4">
+    <View className="flex flex-1">
       <SubtleInput
         className="text-2xl"
         placeholder="enter the list name here …"
