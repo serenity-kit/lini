@@ -14,6 +14,7 @@
   "dependencies": {
     "@expo/vector-icons": "^14.0.0",
     "@radix-ui/react-checkbox": "^1.0.4",
+    "@react-navigation/drawer": "^6.6.15",
     "@react-navigation/native": "^6.0.2",
     "@tanstack/react-query": "^5.40.0",
     "@trpc/client": "^11.0.0-rc.382",

@@ -14,6 +14,7 @@ export const Logout: React.FC = () => {
     <Button
       // not perfect but good enough since the local changes are fast
       disabled={logoutMutation.isPending}
+      variant="outline"
       onPress={async () => {
         lockerStorage.clearAll();
         logoutMutation.mutate(undefined, {
