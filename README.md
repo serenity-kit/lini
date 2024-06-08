@@ -117,15 +117,14 @@ TODO better version where the token is also never exposed to the network so not 
 
 ## Todos
 
-- implement todos properly in yjs
+- locker bug during registration
 - show members and invitation link as menu (popup broken)
 - proper login/signup redirect
 - on enter submit the add form (also every input)
+- fancier checkbox
 
 - use expo-secure-store for the sessionKey
 - encrypt MMKV storage on iOS and Android
-- todo list UI & structure
-- nav UI structure
 - logo and colors
 - deploy to production (before move the repo)
 

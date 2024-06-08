@@ -15,11 +15,13 @@ import { SubtleInput } from "../../../components/subtleInput";
 import { UpdateDocumentNameForm } from "../../../components/updateDocumentNameForm";
 import { useLocker } from "../../../hooks/useLocker";
 import { useYData } from "../../../hooks/useYData";
+import { convertChecklistToArrayAndSort } from "../../../utils/convertChecklistToArrayAndSort";
 import { deserialize } from "../../../utils/deserialize";
 import {
   documentPendingChangesStorage,
   documentStorage,
 } from "../../../utils/documentStorage";
+import { position } from "../../../utils/position";
 import { serialize } from "../../../utils/serialize";
 import { trpc } from "../../../utils/trpc";
 
@@ -30,11 +32,6 @@ const websocketEndpoint =
 
 type Props = {
   documentId: string;
-};
-
-type ChecklistItem = {
-  text: string;
-  checked: boolean;
 };
 
 const List: React.FC<Props> = () => {
@@ -83,6 +80,7 @@ const List: React.FC<Props> = () => {
 
   const yDocument: Yjs.Map<Yjs.Map<any>> = yDocRef.current.getMap("document");
   const document = useYData<{ [k: string]: ChecklistItem }>(yDocument);
+  const checklist = document ? convertChecklistToArrayAndSort(document) : [];
   const [newTodoText, setNewTodoText] = useState("");
 
   const { content } = useLocker();
@@ -156,10 +154,15 @@ const List: React.FC<Props> = () => {
             const id = generateId(sodium);
             const text = new Yjs.Text(newTodoText);
             const todo = new Yjs.Map<any>();
+            const newPosition =
+              checklist.length > 0
+                ? position.createBetween(undefined, checklist[0].position)
+                : position.createBetween();
             todo.set("type", "checklist-item");
             todo.set("text", text);
             todo.set("checked", false);
-            // TODO add position
+            todo.set("position", newPosition);
+
             yDocument.set(id, todo);
             setNewTodoText("");
           }}
@@ -168,10 +171,7 @@ const List: React.FC<Props> = () => {
         </Button>
       </View>
 
-      {Object.keys(document || {}).map((id, index) => {
-        if (document === null) return null;
-        const entry = document[id];
-
+      {checklist.map((entry, index) => {
         return (
           <View
             key={`${index}-${entry}`}
@@ -180,7 +180,7 @@ const List: React.FC<Props> = () => {
             <Checkbox
               checked={entry.checked}
               onCheckedChange={() => {
-                const yEntry = yDocument.get(id);
+                const yEntry = yDocument.get(entry.id);
                 if (yEntry) {
                   yEntry.set("checked", !entry.checked);
                 }
@@ -195,7 +195,7 @@ const List: React.FC<Props> = () => {
                 autoCorrect={false}
                 autoComplete="off"
                 onChangeText={(newText) => {
-                  const yEntry = yDocument.get(id);
+                  const yEntry = yDocument.get(entry.id);
                   if (yEntry) {
                     yEntry.set("text", newText);
                   }
@@ -206,10 +206,10 @@ const List: React.FC<Props> = () => {
               variant="ghost"
               size="icon"
               onPress={() => {
-                yDocument.delete(id);
+                yDocument.delete(entry.id);
               }}
             >
-              <X width={14} height={14} className="text-red-700" />
+              <X width={16} height={16} className="text-red-700" />
             </Button>
           </View>
         );
