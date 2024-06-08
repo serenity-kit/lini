@@ -51,7 +51,7 @@ export const CreateListForm: React.FC = () => {
 
               router.navigate({
                 pathname: `/list/[documentId]`,
-                params: { documentId: document.id },
+                params: { documentId: document.id, isNew: "true" },
               });
               const documentsQueryKey = getQueryKey(
                 trpc.documents,

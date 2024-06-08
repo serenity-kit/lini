@@ -46,9 +46,11 @@ const Register = () => {
       />
       {error && (
         <View className="mt-4">
-          <AlertCircle className="h-4 w-4" />
-          {/* TODO proper styling */}
-          <Text>Error</Text>
+          <View className="flex flex-row items-center gap-1">
+            <AlertCircle className="h-4 w-4" />
+            {/* TODO proper styling */}
+            <Text>Error</Text>
+          </View>
           <Text>Failed to sign up</Text>
         </View>
       )}

@@ -117,9 +117,9 @@ TODO better version where the token is also never exposed to the network so not 
 
 ## Todos
 
-- show members and invitation link as menu (popup broken)
-- on enter submit the add form (also every input)
 - fancier checkbox
+- create a new invitation needs a change in react-native-libsodium (use noble?)
+- on new list focus on the name input
 
 - use expo-secure-store for the sessionKey
 - encrypt MMKV storage on iOS and Android

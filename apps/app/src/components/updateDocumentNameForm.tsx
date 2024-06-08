@@ -1,5 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { getQueryKey } from "@trpc/react-query";
+import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { Alert, View } from "react-native";
 import { decryptString } from "../utils/decryptString";
@@ -14,6 +15,14 @@ type Props = {
 };
 
 export const UpdateDocumentNameForm = ({ documentId, documentKey }: Props) => {
+  const { isNew } = useLocalSearchParams();
+
+  useEffect(() => {
+    if (isNew) {
+      router.setParams({ isNew: undefined });
+    }
+  }, []);
+
   const [name, setName] = useState(() => {
     return documentNameStorage.getString(documentId) || "";
   });
@@ -75,6 +84,7 @@ export const UpdateDocumentNameForm = ({ documentId, documentKey }: Props) => {
           setName(value);
           updateName(value);
         }}
+        autoFocus={Boolean(isNew)}
       />
     </View>
   );

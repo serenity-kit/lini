@@ -118,6 +118,25 @@ const List: React.FC<Props> = () => {
     logging: "debug",
   });
 
+  const addChecklistItem = (event: any) => {
+    event.preventDefault();
+    // @ts-expect-error sodium is not typed
+    const id = generateId(sodium);
+    const text = new Yjs.Text(newTodoText);
+    const todo = new Yjs.Map<any>();
+    const newPosition =
+      checklist.length > 0
+        ? position.createBetween(undefined, checklist[0].position)
+        : position.createBetween();
+    todo.set("type", "checklist-item");
+    todo.set("text", text);
+    todo.set("checked", false);
+    todo.set("position", newPosition);
+
+    yDocument.set(id, todo);
+    setNewTodoText("");
+  };
+
   return (
     <View className="py-8 gap-4">
       <View className="flex flex-row gap-6 items-center justify-end pl-4 pr-6">
@@ -144,29 +163,10 @@ const List: React.FC<Props> = () => {
             autoCorrect={false}
             autoComplete="off"
             numberOfLines={1}
+            onSubmitEditing={addChecklistItem}
           />
         </View>
-        <Button
-          className="add"
-          onPress={(event) => {
-            event.preventDefault();
-            // @ts-expect-error sodium is not typed
-            const id = generateId(sodium);
-            const text = new Yjs.Text(newTodoText);
-            const todo = new Yjs.Map<any>();
-            const newPosition =
-              checklist.length > 0
-                ? position.createBetween(undefined, checklist[0].position)
-                : position.createBetween();
-            todo.set("type", "checklist-item");
-            todo.set("text", text);
-            todo.set("checked", false);
-            todo.set("position", newPosition);
-
-            yDocument.set(id, todo);
-            setNewTodoText("");
-          }}
-        >
+        <Button className="add" onPress={addChecklistItem}>
           <Text>Add</Text>
         </Button>
       </View>
