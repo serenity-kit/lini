@@ -45,7 +45,7 @@ export const useLocker = () => {
     latestUserLockerQuery.data?.clock,
   ]);
 
-  // TODO RETRY in case it fails
+  // TODO mutation RETRY in case it fails
   const addItem = async (
     params:
       | { type: "document"; documentId: string; value: string }

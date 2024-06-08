@@ -8,6 +8,7 @@ import {
 import { Text } from "~/components/ui/text";
 import { Users } from "~/lib/icons/Users";
 import { trpc } from "../utils/trpc";
+import { Avatar } from "./avatar";
 import { DocumentInvitation } from "./documentInvitation";
 
 type Props = {
@@ -33,23 +34,16 @@ export const DocumentMembers: React.FC<Props> = ({
   return (
     <View className="flex flex-row">
       {isPrivateNote ? (
-        <View className="bg-slate-200 px-4 h-10 rounded-full items-center justify-center">
+        <View className="bg-slate-100 border border-slate-200 px-3 h-10 rounded-full items-center justify-center">
           <Text className="text-sm">Private</Text>
         </View>
       ) : (
-        <View className="flex -space-x-3">
+        <View className="flex flex-row -space-x-3">
           {visibleUsers.map((user) => {
-            return (
-              <View
-                key={user.id}
-                className="bg-slate-200 w-10 h-10 rounded-full items-center justify-center"
-              >
-                <Text>{user.username.substring(0, 2)}</Text>
-              </View>
-            );
+            return <Avatar key={user.id} name={user.username} />;
           })}
           {moreUsersCount !== 0 && (
-            <View className="bg-slate-200 w-10 h-10 rounded-full items-center justify-center">
+            <View className="bg-slate-100 border border-slate-200 w-10 h-10 rounded-full items-center justify-center">
               <Text>+{moreUsersCount}</Text>
             </View>
           )}
@@ -80,10 +74,7 @@ export const DocumentMembers: React.FC<Props> = ({
                   key={user.id}
                   className="flex flex-row gap-4 items-center"
                 >
-                  <View className="bg-slate-200 w-10 h-10 rounded-full items-center justify-center">
-                    <Text>{user.username.substring(0, 2)}</Text>
-                  </View>
-
+                  <Avatar name={user.username} />
                   <Text>{user.username}</Text>
                   <Text>{user.isAdmin ? "(admin)" : ""}</Text>
                 </View>

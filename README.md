@@ -117,9 +117,7 @@ TODO better version where the token is also never exposed to the network so not 
 
 ## Todos
 
-- locker bug during registration
 - show members and invitation link as menu (popup broken)
-- proper login/signup redirect
 - on enter submit the add form (also every input)
 - fancier checkbox
 
@@ -127,6 +125,8 @@ TODO better version where the token is also never exposed to the network so not 
 - encrypt MMKV storage on iOS and Android
 - logo and colors
 - deploy to production (before move the repo)
+
+- locker bug during registration 🤷
 
 - figure out how author keys are managed (tabs in serenity and possible change in secsync)
 - add retry for locker in case write fails (invalid clock)

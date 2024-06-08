@@ -11,6 +11,7 @@ import { useLocker } from "../hooks/useLocker";
 import { decryptString } from "../utils/decryptString";
 import { documentNameStorage } from "../utils/documentStorage";
 import { trpc } from "../utils/trpc";
+import { Avatar } from "./avatar";
 
 export const DrawerContent: React.FC = () => {
   const meQuery = trpc.me.useQuery(undefined, {
@@ -50,9 +51,7 @@ export const DrawerContent: React.FC = () => {
     >
       <View className="gap-4">
         <View className="flex flex-row px-4 items-center gap-2 pt-4">
-          <View className="bg-slate-200 w-10 h-10 rounded-full items-center justify-center">
-            <Text>{meQuery.data?.username.substring(0, 2)}</Text>
-          </View>
+          <Avatar name={meQuery.data?.username || ""} />
           <Text>{meQuery.data?.username}</Text>
         </View>
 
