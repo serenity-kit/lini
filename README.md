@@ -117,14 +117,13 @@ TODO better version where the token is also never exposed to the network so not 
 
 ## Todos
 
-- fancier checkbox
 - create a new invitation needs a change in react-native-libsodium (use noble?)
-- on new list focus on the name input
+- show pending changes in the sidebar and the list
 
 - use expo-secure-store for the sessionKey
 - encrypt MMKV storage on iOS and Android
 - logo and colors
-- deploy to production (before move the repo)
+- deploy to production (before move the repo & cleanup readme and make on initial commit)
 
 - locker bug during registration 🤷
 
