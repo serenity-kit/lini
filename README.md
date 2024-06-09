@@ -117,14 +117,14 @@ TODO better version where the token is also never exposed to the network so not 
 
 ## Todos
 
+- secure locker with an encryption key
 - create a new invitation needs a change in react-native-libsodium (use noble?)
 - show pending changes in the sidebar and the list
 
-- use expo-secure-store for the sessionKey
-- encrypt MMKV storage on iOS and Android
-- logo and colors
 - deploy to production (before move the repo & cleanup readme and make on initial commit)
+- logo
 
+- web: focus on input after adding item
 - locker bug during registration 🤷
 
 - figure out how author keys are managed (tabs in serenity and possible change in secsync)

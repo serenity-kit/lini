@@ -1,28 +1,30 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
-import { Alert } from "react-native";
+import { Alert, Platform } from "react-native";
 import { Button } from "~/components/ui/button";
 import { Text } from "~/components/ui/text";
 import { lockerStorage } from "../hooks/useLocker";
-import {
-  documentNameStorage,
-  documentPendingChangesStorage,
-  documentStorage,
-} from "../utils/documentStorage";
-import { sessionKeyStorage } from "../utils/sessionKeyStorage";
+import { clearLockerKey } from "../locker/lockerKeyStorage";
+import { getDocumentStorage, rotateStorageKey } from "../utils/documentStorage";
+import { clearSessionKey } from "../utils/sessionKeyStorage";
 import { trpc } from "../utils/trpc";
 
 export const Logout: React.FC = () => {
   const logoutMutation = trpc.logout.useMutation();
   const queryClient = useQueryClient();
 
-  const clearAllStores = () => {
+  const clearAllStores = async () => {
     lockerStorage.clearAll();
-    documentNameStorage.clearAll();
-    documentStorage.clearAll();
-    documentPendingChangesStorage.clearAll();
-    sessionKeyStorage.clearAll();
+    const documentStorage = getDocumentStorage();
+    documentStorage.documentNameStorage.clearAll();
+    documentStorage.documentStorage.clearAll();
+    documentStorage.documentPendingChangesStorage.clearAll();
     queryClient.invalidateQueries();
+    await clearSessionKey();
+    await clearLockerKey();
+    if (Platform.OS !== "web") {
+      await rotateStorageKey();
+    }
   };
 
   return (
@@ -31,11 +33,11 @@ export const Logout: React.FC = () => {
       disabled={logoutMutation.isPending}
       variant="outline"
       onPress={async () => {
-        clearAllStores();
+        await clearAllStores();
         logoutMutation.mutate(undefined, {
-          onSuccess: () => {
+          onSuccess: async () => {
             // delete again to verify in case new info came in during the logout request
-            clearAllStores();
+            await clearAllStores();
             router.navigate("/login");
           },
           onError: () => {

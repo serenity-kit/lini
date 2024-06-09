@@ -17,10 +17,7 @@ import { useLocker } from "../../../hooks/useLocker";
 import { useYData } from "../../../hooks/useYData";
 import { convertChecklistToArrayAndSort } from "../../../utils/convertChecklistToArrayAndSort";
 import { deserialize } from "../../../utils/deserialize";
-import {
-  documentPendingChangesStorage,
-  documentStorage,
-} from "../../../utils/documentStorage";
+import { getDocumentStorage } from "../../../utils/documentStorage";
 import { position } from "../../../utils/position";
 import { serialize } from "../../../utils/serialize";
 import { trpc } from "../../../utils/trpc";
@@ -49,13 +46,15 @@ const List: React.FC<Props> = () => {
   const [initialData] = useState(() => {
     const yDoc = new Yjs.Doc();
     // load full document
-    const serializedDoc = documentStorage.getString(documentId);
+    const serializedDoc =
+      getDocumentStorage().documentStorage.getString(documentId);
     if (serializedDoc) {
       Yjs.applyUpdateV2(yDoc, deserialize(serializedDoc));
     }
 
     // loads the pendingChanges
-    const pendingChanges = documentPendingChangesStorage.getString(documentId);
+    const pendingChanges =
+      getDocumentStorage().documentPendingChangesStorage.getString(documentId);
 
     return {
       yDoc,
@@ -69,7 +68,7 @@ const List: React.FC<Props> = () => {
   useEffect(() => {
     const onUpdate = (update: any) => {
       const fullYDoc = Yjs.encodeStateAsUpdateV2(yDocRef.current);
-      documentStorage.set(documentId, serialize(fullYDoc));
+      getDocumentStorage().documentStorage.set(documentId, serialize(fullYDoc));
     };
     yDocRef.current.on("updateV2", onUpdate);
 
@@ -91,7 +90,10 @@ const List: React.FC<Props> = () => {
     pendingChanges: initialData.pendingChanges,
     // callback to store the pending changes in
     onPendingChangesUpdated: (allChanges) => {
-      documentPendingChangesStorage.set(documentId, serialize(allChanges));
+      getDocumentStorage().documentPendingChangesStorage.set(
+        documentId,
+        serialize(allChanges)
+      );
     },
     documentId,
     signatureKeyPair: authorKeyPair,

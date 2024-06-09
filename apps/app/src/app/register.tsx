@@ -4,8 +4,8 @@ import { View } from "react-native";
 import { Text } from "~/components/ui/text";
 import { AlertCircle } from "~/lib/icons/AlertCircle";
 import { AuthForm } from "../components/authForm";
-import { useLocker } from "../hooks/useLocker";
 import { useRegisterAndLogin } from "../hooks/useRegisterAndLogin";
+import { setLockerKey } from "../locker/lockerKeyStorage";
 import { deriveKey } from "../utils/deriveKey";
 import { setSessionKey } from "../utils/sessionKeyStorage";
 
@@ -13,7 +13,6 @@ const Register = () => {
   const { registerAndLogin, isPending } = useRegisterAndLogin();
   const { redirect } = useLocalSearchParams<{ redirect?: string }>();
   const [error, setError] = useState<string | null>(null);
-  const { addItem } = useLocker();
 
   return (
     <View className="max-w-md mr-auto ml-auto min-w-80 mt-32">
@@ -33,7 +32,7 @@ const Register = () => {
             subkeyId: "1D4xb6ADE6j67ZttH7cj7Q",
           });
           setSessionKey(result.sessionKey);
-          await addItem({ type: "lockerKey", value: lockerKey.key });
+          setLockerKey(lockerKey.key);
 
           if (redirect) {
             router.navigate(redirect);

@@ -3,7 +3,7 @@
   "main": "src/AppEntry.ts",
   "version": "1.0.0",
   "scripts": {
-    "dev": "EXPO_USE_METRO_WORKSPACE_ROOT=1 expo start --dev-client",
+    "dev": "EXPO_USE_METRO_WORKSPACE_ROOT=1 expo start --dev-client -c",
     "ts:check": "tsc --noEmit",
     "test": "jest",
     "lint": "echo \"Lint not setup\" # expo lint"

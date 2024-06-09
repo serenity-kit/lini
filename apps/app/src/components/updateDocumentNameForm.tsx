@@ -4,7 +4,7 @@ import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { Alert, View } from "react-native";
 import { decryptString } from "../utils/decryptString";
-import { documentNameStorage } from "../utils/documentStorage";
+import { getDocumentStorage } from "../utils/documentStorage";
 import { encryptString } from "../utils/encryptString";
 import { trpc } from "../utils/trpc";
 import { SubtleInput } from "./subtleInput";
@@ -24,7 +24,7 @@ export const UpdateDocumentNameForm = ({ documentId, documentKey }: Props) => {
   }, []);
 
   const [name, setName] = useState(() => {
-    return documentNameStorage.getString(documentId) || "";
+    return getDocumentStorage().documentNameStorage.getString(documentId) || "";
   });
 
   const getDocumentQuery = trpc.getDocument.useQuery(documentId, {
@@ -47,7 +47,7 @@ export const UpdateDocumentNameForm = ({ documentId, documentKey }: Props) => {
   }, [getDocumentQuery.data?.nameCiphertext]);
 
   const updateName = async (name: string) => {
-    documentNameStorage.set(documentId, name);
+    getDocumentStorage().documentNameStorage.set(documentId, name);
     const { ciphertext, nonce, commitment } = encryptString({
       value: name,
       key: documentKey,

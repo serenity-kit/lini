@@ -35,6 +35,7 @@ export const AuthForm = ({ onSubmit, isPending, children }: Props) => {
           onSubmitEditing={() => {
             onSubmit({ username, password });
           }}
+          editable={!isPending}
         />
 
         <Input
@@ -51,6 +52,7 @@ export const AuthForm = ({ onSubmit, isPending, children }: Props) => {
           onSubmitEditing={() => {
             onSubmit({ username, password });
           }}
+          editable={!isPending}
         />
 
         <Button

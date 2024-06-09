@@ -16,7 +16,7 @@ const Invitation: React.FC = () => {
   const { token: rawToken } = useLocalSearchParams();
   const token = typeof rawToken === "string" ? rawToken : "";
   const key = getHashParameter("key");
-  const locker = useLocker();
+  const { addItem } = useLocker();
 
   const documentInvitationByTokenQuery =
     trpc.documentInvitationByToken.useQuery(token);
@@ -58,7 +58,7 @@ const Invitation: React.FC = () => {
         },
         onSuccess: (data) => {
           if (data?.documentId) {
-            locker.addItem({
+            addItem({
               type: "document",
               documentId: data.documentId,
               value: sodium.to_base64(listKey),

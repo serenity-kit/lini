@@ -9,7 +9,7 @@ import { CreateListForm } from "../components/createListForm";
 import { Logout } from "../components/logout";
 import { useLocker } from "../hooks/useLocker";
 import { decryptString } from "../utils/decryptString";
-import { documentNameStorage } from "../utils/documentStorage";
+import { getDocumentStorage } from "../utils/documentStorage";
 import { trpc } from "../utils/trpc";
 import { Avatar } from "./avatar";
 
@@ -30,7 +30,7 @@ export const DrawerContent: React.FC = () => {
   const documentsQuery = trpc.documents.useQuery(undefined, {
     refetchInterval: 5000,
   });
-  let keys = documentNameStorage.getAllKeys();
+  let keys = getDocumentStorage().documentNameStorage.getAllKeys();
   if (documentsQuery.data) {
     const remoteDocumentIds = documentsQuery.data.map((doc) => doc.id);
     // merge remote and local keys and deduplicate them
@@ -75,7 +75,7 @@ export const DrawerContent: React.FC = () => {
                   nonce: doc.nameNonce,
                   key: documentKey,
                 })
-              : documentNameStorage.getString(docId);
+              : getDocumentStorage().documentNameStorage.getString(docId);
 
             return (
               <Link href={`/list/${docId}`} key={docId} asChild>
