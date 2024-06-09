@@ -1,12 +1,13 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { getQueryKey } from "@trpc/react-query";
+import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { Alert, View } from "react-native";
-import { Input } from "~/components/ui/input";
 import { decryptString } from "../utils/decryptString";
-import { documentNameStorage } from "../utils/documentStorage";
+import { getDocumentStorage } from "../utils/documentStorage";
 import { encryptString } from "../utils/encryptString";
 import { trpc } from "../utils/trpc";
+import { SubtleInput } from "./subtleInput";
 
 type Props = {
   documentId: string;
@@ -14,8 +15,16 @@ type Props = {
 };
 
 export const UpdateDocumentNameForm = ({ documentId, documentKey }: Props) => {
+  const { isNew } = useLocalSearchParams();
+
+  useEffect(() => {
+    if (isNew) {
+      router.setParams({ isNew: undefined });
+    }
+  }, []);
+
   const [name, setName] = useState(() => {
-    return documentNameStorage.getString(documentId) || "";
+    return getDocumentStorage().documentNameStorage.getString(documentId) || "";
   });
 
   const getDocumentQuery = trpc.getDocument.useQuery(documentId, {
@@ -38,7 +47,7 @@ export const UpdateDocumentNameForm = ({ documentId, documentKey }: Props) => {
   }, [getDocumentQuery.data?.nameCiphertext]);
 
   const updateName = async (name: string) => {
-    documentNameStorage.set(documentId, name);
+    getDocumentStorage().documentNameStorage.set(documentId, name);
     const { ciphertext, nonce, commitment } = encryptString({
       value: name,
       key: documentKey,
@@ -63,10 +72,10 @@ export const UpdateDocumentNameForm = ({ documentId, documentKey }: Props) => {
   };
 
   return (
-    <View>
-      <Input
-        className="border border-slate-300 p-2 rounded"
-        placeholder="List name"
+    <View className="flex flex-1">
+      <SubtleInput
+        className="text-2xl"
+        placeholder="enter the list name here …"
         autoComplete="off"
         autoCorrect={false}
         autoCapitalize="none"
@@ -75,6 +84,7 @@ export const UpdateDocumentNameForm = ({ documentId, documentKey }: Props) => {
           setName(value);
           updateName(value);
         }}
+        autoFocus={Boolean(isNew)}
       />
     </View>
   );

@@ -1,14 +1,13 @@
-import { MMKV } from "react-native-mmkv";
-// TODO replace with secure storage!!!
-
-const sessionKeyStorage = new MMKV({
-  id: `session-key-storage`,
-});
+import * as SecureStore from "expo-secure-store";
 
 export const setSessionKey = (sessionKey: string) => {
-  sessionKeyStorage.set("sessionKey", sessionKey);
+  SecureStore.setItem("sessionKey", sessionKey);
 };
 
 export const getSessionKey = () => {
-  return sessionKeyStorage.getString("sessionKey");
+  return SecureStore.getItem("sessionKey");
+};
+
+export const clearSessionKey = async () => {
+  return SecureStore.deleteItemAsync("sessionKey");
 };

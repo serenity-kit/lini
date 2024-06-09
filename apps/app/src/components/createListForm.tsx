@@ -1,87 +1,75 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { getQueryKey } from "@trpc/react-query";
 import { router } from "expo-router";
-import { Alert, View } from "react-native";
+import { Alert } from "react-native";
 import * as sodium from "react-native-libsodium";
 import { generateId } from "secsync";
 import { Button } from "~/components/ui/button";
 import { Text } from "~/components/ui/text";
 import { useLocker } from "../hooks/useLocker";
-import { documentNameStorage } from "../utils/documentStorage";
+import { getDocumentStorage } from "../utils/documentStorage";
 import { encryptString } from "../utils/encryptString";
 import { trpc } from "../utils/trpc";
 
 export const CreateListForm: React.FC = () => {
-  // const [name, setName] = useState("");
   const createDocumentMutation = trpc.createDocument.useMutation();
   const { addItem } = useLocker();
   const queryClient = useQueryClient();
 
   return (
-    <View className="flex justify-center items-center gap-4 py-4">
-      {/* <Input
-        placeholder="List name"
-        className="max-w-48"
-        value={name}
-        autoCorrect={false}
-        onChangeText={(value) => {
-          setName(value);
-        }}
-      /> */}
-      <Button
-        disabled={createDocumentMutation.isPending}
-        onPress={() => {
-          const key = sodium.crypto_aead_xchacha20poly1305_ietf_keygen();
-          // @ts-expect-error not matching libsodium types
-          const documentId = generateId(sodium);
+    <Button
+      disabled={createDocumentMutation.isPending}
+      onPress={() => {
+        const key = sodium.crypto_aead_xchacha20poly1305_ietf_keygen();
+        // @ts-expect-error not matching libsodium types
+        const documentId = generateId(sodium);
 
-          const {
-            ciphertext: nameCiphertext,
-            nonce: nameNonce,
-            commitment: nameCommitment,
-          } = encryptString({
-            value: "",
-            key,
-          });
+        const {
+          ciphertext: nameCiphertext,
+          nonce: nameNonce,
+          commitment: nameCommitment,
+        } = encryptString({
+          value: "",
+          key,
+        });
 
-          createDocumentMutation.mutate(
-            {
-              id: documentId,
-              nameCiphertext,
-              nameNonce,
-              nameCommitment,
+        createDocumentMutation.mutate(
+          {
+            id: documentId,
+            nameCiphertext,
+            nameNonce,
+            nameCommitment,
+          },
+          {
+            onSuccess: async ({ document }) => {
+              await addItem({
+                type: "document",
+                documentId: document.id,
+                value: sodium.to_base64(key),
+              });
+              getDocumentStorage().documentNameStorage.set(document.id, "");
+
+              router.navigate({
+                pathname: `/list/[documentId]`,
+                params: { documentId: document.id, isNew: "true" },
+              });
+              const documentsQueryKey = getQueryKey(
+                trpc.documents,
+                undefined,
+                "query"
+              );
+              queryClient.invalidateQueries({
+                queryKey: [documentsQueryKey],
+              });
             },
-            {
-              onSuccess: async ({ document }) => {
-                addItem({
-                  type: "document",
-                  documentId: document.id,
-                  value: sodium.to_base64(key),
-                });
-                documentNameStorage.set(document.id, "");
-
-                router.navigate({
-                  pathname: `/list/[documentId]`,
-                  params: { documentId: document.id },
-                });
-                const documentsQueryKey = getQueryKey(
-                  trpc.documents,
-                  undefined,
-                  "query"
-                );
-                queryClient.invalidateQueries({
-                  queryKey: [documentsQueryKey],
-                });
-              },
-              onError: () => {
-                Alert.alert("Failed to create the list");
-              },
-            }
-          );
-        }}
-      >
-        <Text>Create List</Text>
-      </Button>
-    </View>
+            onError: () => {
+              Alert.alert("Failed to create the list");
+            },
+          }
+        );
+      }}
+    >
+      <Text>Create List</Text>
+    </Button>
   );
 };

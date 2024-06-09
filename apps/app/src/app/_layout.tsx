@@ -5,11 +5,17 @@ import {
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
-import { httpBatchLink } from "@trpc/client";
-import { SplashScreen, Stack } from "expo-router";
+import { TRPCClientError, httpBatchLink } from "@trpc/client";
+import {
+  Slot,
+  SplashScreen,
+  router,
+  useNavigationContainerRef,
+} from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { PortalHost } from "~/components/primitives/portal";
 import { NAV_THEME } from "~/lib/constants";
 import { useColorScheme } from "~/lib/useColorScheme";
 import "../global.css";
@@ -43,42 +49,44 @@ export default function Layout() {
     }
   }, [isLoadingComplete]);
 
+  const navigationRef = useNavigationContainerRef(); // You can also use a regular ref with `React.useRef()`
+
   const [queryClient] = useState(
     () =>
       new QueryClient({
         queryCache: new QueryCache({
-          // TODO
-          // onError: (error) => {
-          //   if (
-          //     error instanceof TRPCClientError &&
-          //     error.data?.code === "UNAUTHORIZED" &&
-          //     window.location.pathname !== "/login"
-          //   ) {
-          //     removeLocalDb();
-          //     queryClient.clear();
-          //     router.navigate({
-          //       to: "/login",
-          //       search: { redirect: window.location.pathname },
-          //     });
-          //   }
-          // },
+          onError: (error) => {
+            if (
+              error instanceof TRPCClientError &&
+              error.data?.code === "UNAUTHORIZED" &&
+              !(
+                navigationRef.getRootState().routes[0].name === "login" ||
+                navigationRef.getRootState().routes[0].name === "register"
+              )
+            ) {
+              queryClient.clear();
+              // const redirect = pathname !== "/" ? "?redirect=" + pathname : "";
+              // router.navigate(`/login${redirect}`);
+              router.navigate(`/`);
+            }
+          },
         }),
         mutationCache: new MutationCache({
-          // TODO
-          // onError: (error) => {
-          //   if (
-          //     error instanceof TRPCClientError &&
-          //     error.data?.code === "UNAUTHORIZED" &&
-          //     window.location.pathname !== "/login"
-          //   ) {
-          //     removeLocalDb();
-          //     queryClient.clear();
-          //     router.navigate({
-          //       to: "/login",
-          //       search: { redirect: window.location.pathname },
-          //     });
-          //   }
-          // },
+          onError: (error) => {
+            if (
+              error instanceof TRPCClientError &&
+              error.data?.code === "UNAUTHORIZED" &&
+              !(
+                navigationRef.getRootState().routes[0].name === "login" ||
+                navigationRef.getRootState().routes[0].name === "register"
+              )
+            ) {
+              queryClient.clear();
+              // const redirect = pathname !== "/" ? "?redirect=" + pathname : "";
+              // router.navigate(`/login${redirect}`);
+              router.navigate(`/`);
+            }
+          },
         }),
       })
   );
@@ -108,17 +116,11 @@ export default function Layout() {
         <SafeAreaProvider>
           <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
             <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
-            <Stack>
-              <Stack.Screen
-                name="index"
-                options={{
-                  // Hide the header for all other routes.
-                  title: "Lists",
-                }}
-              />
-            </Stack>
+
+            <Slot />
+
             {/* Default Portal Host (one per app) */}
-            {/* <PortalHost /> */}
+            <PortalHost />
           </ThemeProvider>
         </SafeAreaProvider>
       </QueryClientProvider>

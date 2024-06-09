@@ -13,6 +13,13 @@ const config = getDefaultConfig(__dirname, { isCSSEnabled: true });
 config.resolver.unstable_enableSymlinks = true;
 config.resolver.unstable_enablePackageExports = true;
 
+//.needed for zustand https://github.com/pmndrs/zustand/discussions/1967#discussioncomment-9578159
+config.resolver.unstable_conditionNames = [
+  "browser",
+  "require",
+  "react-native",
+];
+
 // Needed for monorepo setup (can be removed in standalone projects)
 const projectRoot = __dirname;
 const monorepoRoot = path.resolve(projectRoot, "../..");

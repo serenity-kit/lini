@@ -117,13 +117,17 @@ TODO better version where the token is also never exposed to the network so not 
 
 ## Todos
 
-- use expo-secure-store for the sessionKey
-- encrypt MMKV storage on iOS and Android
-- todo list UI & structure
-- nav UI structure
-- logo and colors
-- deploy to production
+- create a new invitation needs a change in react-native-libsodium (use noble?)
+- show pending changes in the sidebar and the list
 
+- deploy to production (before move the repo & cleanup readme and make on initial commit)
+- logo
+
+- web: focus on input after adding item
+- locker bug during registration 🤷
+- sort lists in the drawer
+
+- store me and members data also locally
 - figure out how author keys are managed (tabs in serenity and possible change in secsync)
 - add retry for locker in case write fails (invalid clock)
 - allow to delete list (needs a tombstone and properly cleanup local stores)

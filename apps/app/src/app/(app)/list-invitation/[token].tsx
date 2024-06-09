@@ -4,11 +4,11 @@ import * as sodium from "react-native-libsodium";
 import { Button } from "~/components/ui/button";
 import { Card } from "~/components/ui/card";
 import { Text } from "~/components/ui/text";
-import { useLocker } from "../../hooks/useLocker";
-import { acceptInvitation } from "../../utils/acceptInvitation";
-import { getHashParameter } from "../../utils/getHashParam";
-import { getSessionKey } from "../../utils/sessionKeyStorage";
-import { trpc } from "../../utils/trpc";
+import { useLocker } from "../../../hooks/useLocker";
+import { acceptInvitation } from "../../../utils/acceptInvitation";
+import { getHashParameter } from "../../../utils/getHashParam";
+import { getSessionKey } from "../../../utils/sessionKeyStorage";
+import { trpc } from "../../../utils/trpc";
 
 const Invitation: React.FC = () => {
   const acceptDocumentInvitationMutation =
@@ -16,7 +16,7 @@ const Invitation: React.FC = () => {
   const { token: rawToken } = useLocalSearchParams();
   const token = typeof rawToken === "string" ? rawToken : "";
   const key = getHashParameter("key");
-  const locker = useLocker();
+  const { addItem } = useLocker();
 
   const documentInvitationByTokenQuery =
     trpc.documentInvitationByToken.useQuery(token);
@@ -38,11 +38,6 @@ const Invitation: React.FC = () => {
       return;
     }
 
-    console.log(
-      "documentInvitationByTokenQuery",
-      documentInvitationByTokenQuery
-    );
-
     const { listKey } = acceptInvitation({
       ciphertext: documentInvitationByTokenQuery.data.ciphertext,
       nonce: documentInvitationByTokenQuery.data.nonce,
@@ -56,9 +51,9 @@ const Invitation: React.FC = () => {
         onError: () => {
           alert("Failed to accept invitation. Please try again.");
         },
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
           if (data?.documentId) {
-            locker.addItem({
+            await addItem({
               type: "document",
               documentId: data.documentId,
               value: sodium.to_base64(listKey),
