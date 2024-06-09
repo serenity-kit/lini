@@ -3,8 +3,11 @@ import { router } from "expo-router";
 import { Alert, Platform } from "react-native";
 import { Button } from "~/components/ui/button";
 import { Text } from "~/components/ui/text";
-import { lockerStorage } from "../hooks/useLocker";
 import { clearLockerKey } from "../locker/lockerKeyStorage";
+import {
+  getLockerStorage,
+  rotateLockerStorageKey,
+} from "../locker/lockerStorage";
 import { getDocumentStorage, rotateStorageKey } from "../utils/documentStorage";
 import { clearSessionKey } from "../utils/sessionKeyStorage";
 import { trpc } from "../utils/trpc";
@@ -14,7 +17,7 @@ export const Logout: React.FC = () => {
   const queryClient = useQueryClient();
 
   const clearAllStores = async () => {
-    lockerStorage.clearAll();
+    getLockerStorage().clearAll();
     const documentStorage = getDocumentStorage();
     documentStorage.documentNameStorage.clearAll();
     documentStorage.documentStorage.clearAll();
@@ -23,6 +26,7 @@ export const Logout: React.FC = () => {
     await clearSessionKey();
     await clearLockerKey();
     if (Platform.OS !== "web") {
+      await rotateLockerStorageKey();
       await rotateStorageKey();
     }
   };

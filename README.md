@@ -117,7 +117,9 @@ TODO better version where the token is also never exposed to the network so not 
 
 ## Todos
 
-- secure locker with an encryption key
+- handle case where locker is not available yet when directly opening a list
+- update locker entries locally when new locker data comes in
+
 - create a new invitation needs a change in react-native-libsodium (use noble?)
 - show pending changes in the sidebar and the list
 
@@ -126,6 +128,7 @@ TODO better version where the token is also never exposed to the network so not 
 
 - web: focus on input after adding item
 - locker bug during registration 🤷
+- sort lists in the drawer
 
 - figure out how author keys are managed (tabs in serenity and possible change in secsync)
 - add retry for locker in case write fails (invalid clock)

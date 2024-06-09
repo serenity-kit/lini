@@ -1,16 +1,13 @@
 import { useMemo } from "react";
 import sodium from "react-native-libsodium";
-import { MMKV } from "react-native-mmkv";
 import { getLockerKey } from "../locker/lockerKeyStorage";
+import { getLockerStorage } from "../locker/lockerStorage";
 import { decryptLocker } from "../utils/decryptLocker";
 import { encryptLocker } from "../utils/encryptLocker";
 import { trpc } from "../utils/trpc";
 
-export const lockerStorage = new MMKV({
-  id: `locker-storage`,
-});
-
 const getCompleteLocalLocker = () => {
+  const lockerStorage = getLockerStorage();
   const allKeys = lockerStorage.getAllKeys();
   return allKeys.reduce<Record<string, string | undefined>>((acc, key) => {
     acc[key] = lockerStorage.getString(key);
@@ -20,7 +17,9 @@ const getCompleteLocalLocker = () => {
 
 export const useLocker = () => {
   const createUserLockerMutation = trpc.createUserLocker.useMutation();
-  const latestUserLockerQuery = trpc.getLatestUserLocker.useQuery();
+  const latestUserLockerQuery = trpc.getLatestUserLocker.useQuery(undefined, {
+    refetchInterval: 5000,
+  });
 
   const mergeLocalAndRemoteLocker = (data: {
     ciphertext: string;
@@ -77,7 +76,7 @@ export const useLocker = () => {
   }) => {
     const { clock, content } = await refetchRemoteLocker();
     const newKey = `document:${params.documentId}`;
-    lockerStorage.set(newKey, params.value);
+    getLockerStorage().set(newKey, params.value);
 
     const newContent = {
       ...content,

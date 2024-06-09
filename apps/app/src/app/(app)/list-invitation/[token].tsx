@@ -56,9 +56,9 @@ const Invitation: React.FC = () => {
         onError: () => {
           alert("Failed to accept invitation. Please try again.");
         },
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
           if (data?.documentId) {
-            addItem({
+            await addItem({
               type: "document",
               documentId: data.documentId,
               value: sodium.to_base64(listKey),
