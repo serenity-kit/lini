@@ -38,11 +38,6 @@ const Invitation: React.FC = () => {
       return;
     }
 
-    console.log(
-      "documentInvitationByTokenQuery",
-      documentInvitationByTokenQuery
-    );
-
     const { listKey } = acceptInvitation({
       ciphertext: documentInvitationByTokenQuery.data.ciphertext,
       nonce: documentInvitationByTokenQuery.data.nonce,

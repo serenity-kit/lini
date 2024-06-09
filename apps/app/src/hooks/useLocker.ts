@@ -27,16 +27,31 @@ export const useLocker = () => {
     commitment: string;
     clock: number;
   }) => {
-    const localLocker = getCompleteLocalLocker();
+    const localLocker = getLockerStorage();
+    const localLockerValues = getCompleteLocalLocker();
+
     const lockerKeyString = getLockerKey();
     if (!lockerKeyString) {
       throw new Error("Locker key not found.");
     }
     const lockerKey = sodium.from_base64(lockerKeyString);
     const contentString = decryptLocker(data, lockerKey);
+    // TODO validate schema
+    const newContent = JSON.parse(contentString);
+
+    // update the local locker with the remote locker values
+    Object.keys(newContent).forEach((key) => {
+      const value = newContent[key];
+      if (!value) {
+        return;
+      }
+      if (!localLockerValues[key]) {
+        localLocker.set(key, value);
+      }
+    });
+
     return {
-      // TODO validate schema
-      ...JSON.parse(contentString),
+      ...newContent,
       ...localLocker,
     };
   };

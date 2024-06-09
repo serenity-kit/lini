@@ -30,7 +30,8 @@ export const DrawerContent: React.FC = () => {
   const documentsQuery = trpc.documents.useQuery(undefined, {
     refetchInterval: 5000,
   });
-  let keys = getDocumentStorage().documentNameStorage.getAllKeys();
+  const documentNameStorage = getDocumentStorage().documentNameStorage;
+  let keys = documentNameStorage.getAllKeys();
   if (documentsQuery.data) {
     const remoteDocumentIds = documentsQuery.data.map((doc) => doc.id);
     // merge remote and local keys and deduplicate them
@@ -76,6 +77,11 @@ export const DrawerContent: React.FC = () => {
                   key: documentKey,
                 })
               : getDocumentStorage().documentNameStorage.getString(docId);
+
+            // store the name if it's not already stored
+            if (!documentNameStorage.getString(docId)) {
+              documentNameStorage.set(docId, name || "Untitled");
+            }
 
             return (
               <Link href={`/list/${docId}`} key={docId} asChild>
