@@ -124,7 +124,6 @@ TODO better version where the token is also never exposed to the network so not 
 - logo
 
 - web: focus on input after adding item
-- locker bug during registration 🤷
 - sort lists in the drawer
 
 - store me and members data also locally
