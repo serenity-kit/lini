@@ -37,7 +37,7 @@
     "expo-status-bar": "~1.12.1",
     "expo-system-ui": "~3.0.4",
     "lucide-react-native": "^0.381.0",
-    "nativewind": "^4.0.1",
+    "nativewind": "^4.0.36",
     "position-strings": "^2.0.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
