@@ -4,9 +4,9 @@
   "type": "module",
   "scripts": {
     "dev": "TS_NODE_TRANSPILE_ONLY=true nodemon --exec node --loader ts-node/esm ./src/index.ts",
-    "build:ts": "rm -rf dist && pnpm tsc --project tsconfig.json",
-    "build:deploy": "rm -rf build && pnpm deploy --filter=server --prod build",
-    "build": "pnpm run build:ts && pnpm build:deploy",
+    "build:ts": "rm -rf dist && yarn tsc --project tsconfig.json",
+    "build:deploy": "rm -rf build && yarn deploy --filter=server --prod build",
+    "build": "yarn run build:ts && yarn build:deploy",
     "start:prod": "PORT=$PORT NODE_ENV=production node ./dist/index.js",
     "ts:check": "tsc --noEmit",
     "test": "echo \"Error: no test specified\"",
