@@ -1,0 +1,31 @@
+{
+  "private": true,
+  "name": "lini-monorepo",
+  "version": "1.0.0",
+  "workspaces": {
+    "packages": [
+      "apps/*",
+      "packages/*"
+    ]
+  },
+  "devDependencies": {
+    "eslint": "^9.3.0",
+    "fs-extra": "^11.2.0",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.5",
+    "postinstall-postinstall": "^2.1.0",
+    "prettier": "3.2.5",
+    "prettier-plugin-tailwindcss": "^0.6.0"
+  },
+  "scripts": {
+    "prepare": "husky install",
+    "ts:check": "pnpm -r ts:check",
+    "test": "pnpm -r test",
+    "lint": "pnpm -r lint",
+    "prettier:write": "pnpm prettier --write '**/*.{ts,tsx,js,jsx,json,md,yml,yaml,css,html,graphql,gql}'",
+    "prettier:check": "pnpm prettier --check '**/*.{ts,tsx,js,jsx,json,md,yml,yaml,css,html,graphql,gql}'"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
+  }
+}

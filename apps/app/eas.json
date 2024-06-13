@@ -1,0 +1,36 @@
+{
+  "cli": {
+    "version": ">= 7.8.5"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "development-simulator": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "ios": {
+        "simulator": true
+      }
+    },
+    "preview": {
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_API_ENDPOINT": "https://lini-api-production.fly.dev/api",
+        "EXPO_PUBLIC_SECSYNC_WS_ENDPOINT": "wss://lini-api-production.fly.dev",
+        "EXPO_PUBLIC_WEB_APP_ORIGIN": "https://www.lini.app"
+      }
+    },
+    "production": {
+      "env": {
+        "EXPO_PUBLIC_API_ENDPOINT": "https://lini-api-production.fly.dev/api",
+        "EXPO_PUBLIC_SECSYNC_WS_ENDPOINT": "wss://lini-api-production.fly.dev",
+        "EXPO_PUBLIC_WEB_APP_ORIGIN": "https://www.lini.app"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}
