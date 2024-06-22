@@ -149,6 +149,9 @@ importers:
       react-native-web:
         specifier: ~0.19.10
         version: 0.19.12(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      react-yjs:
+        specifier: ^0.0.3
+        version: 0.0.3(react@18.2.0)(yjs@13.6.18)
       secsync:
         specifier: ^0.5.0
         version: 0.5.0
@@ -5260,6 +5263,12 @@ packages:
     resolution: {integrity: sha512-JWD+aQ0lh2gvh4NM3bBM42Kx+XybOxCpgYK7F8ugAlpaTSnWsX+39Z4XkOykGZAHrjwwTZT3x3KxswVWxHPUqA==}
     peerDependencies:
       react: ^18.2.0
+
+  react-yjs@0.0.3:
+    resolution: {integrity: sha512-8HYkqb6jliEX2fZW9hHm6tOyAden8y3TVwmxvGTvNfrHQ+j9SgIj/S25mVn4aoja4KP6ZZz13yVt203dzCNxhg==}
+    peerDependencies:
+      react: ^18 || ^19
+      yjs: ^13.6.16
 
   react@18.2.0:
     resolution: {integrity: sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==}
@@ -12708,6 +12717,11 @@ snapshots:
       react-is: 18.3.1
       react-shallow-renderer: 16.15.0(react@18.2.0)
       scheduler: 0.23.2
+
+  react-yjs@0.0.3(react@18.2.0)(yjs@13.6.18):
+    dependencies:
+      react: 18.2.0
+      yjs: 13.6.18
 
   react@18.2.0:
     dependencies:
