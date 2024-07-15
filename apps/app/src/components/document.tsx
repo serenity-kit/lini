@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { View } from "react-native";
 import sodium, { KeyPair } from "react-native-libsodium";
+import { useY } from "react-yjs";
 import { generateId } from "secsync";
 import { useYjsSync } from "secsync-react-yjs";
 import * as Yjs from "yjs";
@@ -12,7 +13,6 @@ import { Checkbox } from "../components/checkbox";
 import { DocumentMembers } from "../components/documentMember";
 import { SubtleInput } from "../components/subtleInput";
 import { UpdateDocumentNameForm } from "../components/updateDocumentNameForm";
-import { useYData } from "../hooks/useYData";
 import { convertChecklistToArrayAndSort } from "../utils/convertChecklistToArrayAndSort";
 import { deserialize } from "../utils/deserialize";
 import { getDocumentStorage } from "../utils/documentStorage";
@@ -72,7 +72,7 @@ const Document: React.FC<Props> = ({ documentKey, documentId }) => {
   }, []);
 
   const yDocument: Yjs.Map<Yjs.Map<any>> = yDocRef.current.getMap("document");
-  const document = useYData<{ [k: string]: ChecklistItem }>(yDocument);
+  const document = useY(yDocument);
   const checklist = document ? convertChecklistToArrayAndSort(document) : [];
   const [newTodoText, setNewTodoText] = useState("");
 
