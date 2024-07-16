@@ -150,8 +150,8 @@ importers:
         specifier: ~0.19.10
         version: 0.19.12(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       react-yjs:
-        specifier: ^0.0.3
-        version: 0.0.3(react@18.2.0)(yjs@13.6.18)
+        specifier: ^2.0.0
+        version: 2.0.0(react@18.2.0)(yjs@13.6.18)
       secsync:
         specifier: ^0.5.0
         version: 0.5.0
@@ -5264,8 +5264,8 @@ packages:
     peerDependencies:
       react: ^18.2.0
 
-  react-yjs@0.0.3:
-    resolution: {integrity: sha512-8HYkqb6jliEX2fZW9hHm6tOyAden8y3TVwmxvGTvNfrHQ+j9SgIj/S25mVn4aoja4KP6ZZz13yVt203dzCNxhg==}
+  react-yjs@2.0.0:
+    resolution: {integrity: sha512-W6wGbiB7npWZlgv9Oi/j1LvxWrD6LzyaPgcWQjQuDNOG1nHe3NFU+uYGKjiazfysO54nFpyQ9VyTpDzlOSfpyQ==}
     peerDependencies:
       react: ^18 || ^19
       yjs: ^13.6.16
@@ -12718,8 +12718,9 @@ snapshots:
       react-shallow-renderer: 16.15.0(react@18.2.0)
       scheduler: 0.23.2
 
-  react-yjs@0.0.3(react@18.2.0)(yjs@13.6.18):
+  react-yjs@2.0.0(react@18.2.0)(yjs@13.6.18):
     dependencies:
+      lib0: 0.2.94
       react: 18.2.0
       yjs: 13.6.18
 
