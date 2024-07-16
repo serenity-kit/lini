@@ -73,7 +73,9 @@ const Document: React.FC<Props> = ({ documentKey, documentId }) => {
 
   const yDocument: Yjs.Map<Yjs.Map<any>> = yDocRef.current.getMap("document");
   const document = useY(yDocument);
-  const checklist = document ? convertChecklistToArrayAndSort(document) : [];
+  const checklist = document
+    ? convertChecklistToArrayAndSort(document as any)
+    : [];
   const [newTodoText, setNewTodoText] = useState("");
 
   const [state, send] = useYjsSync({
